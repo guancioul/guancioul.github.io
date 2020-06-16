@@ -5,7 +5,8 @@ permalink: /about/
 ---
 
 ## Leetcode
-![](https://i.imgur.com/ZmxIQ5q.png)
+![](https://i.imgur.com/3sSyCIS.png)
+
 
 ## Codewars
 <img src="https://www.codewars.com/users/guancioul/badges/large">
