@@ -6,11 +6,13 @@ permalink: /about/
 
 ## Leetcode
 #### Guancioul
-https://leetcode-badge.chyroc.cn/?name=guancioul
+<img src="https://leetcode-badge.chyroc.cn/?name=guancioul">
+
 #### Neroal
-https://leetcode-badge.chyroc.cn/?name=b0543019
+<img src="https://leetcode-badge.chyroc.cn/?name=b0543019">
+
 #### MonetCH
-https://leetcode-badge.chyroc.cn/?name=MonetCH
+<img src="https://leetcode-badge.chyroc.cn/?name=MonetCH">
 
 ## Codewars
 <img src="https://www.codewars.com/users/guancioul/badges/large">
