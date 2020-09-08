@@ -14,6 +14,9 @@ permalink: /about/
 #### MonetCH
 <img src="https://leetcode-badge.chyroc.cn/?name=MonetCH">
 
+#### amos91100
+<img src="https://leetcode-badge.chyroc.cn/?name=amos91100">
+
 ## Codewars
 <img src="https://www.codewars.com/users/guancioul/badges/large">
 
