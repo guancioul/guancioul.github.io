@@ -6,7 +6,7 @@ permalink: /about/
 
 ## Leetcode
 #### Guancioul
-<img src="https://leetcode-badge.chyroc.cn/?name=guancioul">
+<img src="https://lc.coding.gs/v1/solved/guancioul.svg">
 
 #### Neroal
 <img src="https://leetcode-badge.chyroc.cn/?name=b0543019">
