@@ -9,13 +9,16 @@ permalink: /about/
 <img src="https://lc.coding.gs/v1/solved/guancioul.svg">
 
 #### Neroal
-<img src="https://leetcode-badge.chyroc.cn/?name=b0543019">
+<img src="https://lc.coding.gs/v1/solved/b0543019.svg">
 
 #### MonetCH
-<img src="https://leetcode-badge.chyroc.cn/?name=MonetCH">
+<img src="https://lc.coding.gs/v1/solved/MonetCH.svg">
 
 #### amos91100
-<img src="https://leetcode-badge.chyroc.cn/?name=amos91100">
+<img src="https://lc.coding.gs/v1/solved/amos91100.svg">
+
+#### qaz12994
+<img src="https://lc.coding.gs/v1/solved/qaz12994.svg">
 
 ## Codewars
 <img src="https://www.codewars.com/users/guancioul/badges/large">
