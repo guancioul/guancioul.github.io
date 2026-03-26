@@ -1,0 +1,7 @@
+baseURL: https://guancioul.github.io/
+locale: en-us
+title: Guancioul Blog
+theme: ["PaperMod"]
+caches:
+  images:
+    dir: :cacheDir/images
