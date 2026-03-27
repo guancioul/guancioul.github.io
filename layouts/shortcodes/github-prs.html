@@ -12,7 +12,8 @@
 (function () {
   const container = document.getElementById('gh-pr-list');
   const username = container.dataset.username;
-  const apiUrl = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public&per_page=100&sort=updated&order=desc`;
+  // Exclude own repos with -user: to show only external open source contributions
+  const apiUrl = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public+-user:${username}&per_page=100&sort=updated&order=desc`;
 
   function timeAgo(dateStr) {
     const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -43,7 +44,7 @@
 
   function renderPRs(items) {
     if (!items.length) {
-      container.innerHTML = '<p class="gh-pr-empty">No public pull requests found.</p>';
+      container.innerHTML = '<p class="gh-pr-empty">No open source pull requests found.</p>';
       return;
     }
 
@@ -85,7 +86,7 @@
           ${openCount} Open
         </span>
         <span class="gh-pr-count gh-pr-count--closed">
-          ${openCount > 0 ? '' : ''}${closedCount} Closed
+          ${closedCount} Closed
         </span>
       </div>
       <div class="gh-pr-items">${cards}</div>`;
