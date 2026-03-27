@@ -1,0 +1,101 @@
+{{ $username := .Get "username" | default "guancioul" }}
+
+{{ partial "pr-icons.html" . }}
+
+<div class="gh-pr-list" id="gh-pr-list" data-username="{{ $username }}">
+  <div class="gh-pr-loading">
+    <span class="gh-spinner"></span> Loading pull requests...
+  </div>
+</div>
+
+<script>
+(function () {
+  const container = document.getElementById('gh-pr-list');
+  const username = container.dataset.username;
+  const apiUrl = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public&per_page=100&sort=updated&order=desc`;
+
+  function timeAgo(dateStr) {
+    const diff = (Date.now() - new Date(dateStr)) / 1000;
+    if (diff < 60) return `${Math.floor(diff)} seconds ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+    if (diff < 2592000) return `${Math.floor(diff / 86400)} days ago`;
+    if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
+    return `${Math.floor(diff / 31536000)} years ago`;
+  }
+
+  function icon(id, cls) {
+    return `<svg class="${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
+  }
+
+  function statusIcon(item) {
+    if (item.pull_request && item.pull_request.merged_at)
+      return icon('icon-pr-merged', 'gh-pr-icon gh-pr-icon--merged');
+    if (item.state === 'open')
+      return icon('icon-pr-open', 'gh-pr-icon gh-pr-icon--open');
+    return icon('icon-pr-closed', 'gh-pr-icon gh-pr-icon--closed');
+  }
+
+  function repoFromUrl(url) {
+    const match = url.match(/repos\/([^/]+\/[^/]+)\//);
+    return match ? match[1] : '';
+  }
+
+  function renderPRs(items) {
+    if (!items.length) {
+      container.innerHTML = '<p class="gh-pr-empty">No public pull requests found.</p>';
+      return;
+    }
+
+    const openCount = items.filter(i => i.state === 'open').length;
+    const closedCount = items.filter(i => i.state !== 'open').length;
+
+    const cards = items.map(item => {
+      const repo = repoFromUrl(item.repository_url);
+      const isMerged = item.pull_request && item.pull_request.merged_at;
+      const statusLabel = isMerged ? 'Merged' : (item.state === 'open' ? 'Open' : 'Closed');
+
+      return `
+      <div class="gh-pr-item">
+        <div class="gh-pr-left">
+          ${statusIcon(item)}
+          <div class="gh-pr-info">
+            <div class="gh-pr-title">
+              <span class="gh-pr-repo">${repo}</span>
+              <a class="gh-pr-link" href="${item.html_url}" target="_blank" rel="noopener">${item.title}</a>
+            </div>
+            <div class="gh-pr-meta">
+              #${item.number} &bull; ${statusLabel} ${timeAgo(isMerged ? item.pull_request.merged_at : item.created_at)} by ${item.user.login}
+            </div>
+          </div>
+        </div>
+        <div class="gh-pr-right">
+          ${item.comments ? `<span class="gh-pr-stat" title="Comments">
+            ${icon('icon-comment', 'gh-pr-icon gh-pr-icon--sm')}
+            ${item.comments}
+          </span>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="gh-pr-header">
+        <span class="gh-pr-count gh-pr-count--open">
+          ${icon('icon-pr-open', 'gh-pr-icon gh-pr-icon--open gh-pr-icon--sm')}
+          ${openCount} Open
+        </span>
+        <span class="gh-pr-count gh-pr-count--closed">
+          ${openCount > 0 ? '' : ''}${closedCount} Closed
+        </span>
+      </div>
+      <div class="gh-pr-items">${cards}</div>`;
+  }
+
+  fetch(apiUrl, { headers: { Accept: 'application/vnd.github.v3+json' } })
+    .then(r => r.json())
+    .then(data => renderPRs(data.items || []))
+    .catch(() => {
+      container.innerHTML = '<p class="gh-pr-empty">Failed to load pull requests. GitHub API rate limit may have been exceeded.</p>';
+    });
+})();
+</script>
