@@ -8,6 +8,10 @@ menu:
       name: Open Source
       url: /open-source/
       weight: 10
+    # - identifier: about
+    #  name: About Me
+    #  url: /about/
+    #  weight: 20
 caches:
   images:
     dir: :cacheDir/images
