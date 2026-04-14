@@ -12,8 +12,14 @@
 (function () {
   const container = document.getElementById('gh-pr-list');
   const username = container.dataset.username;
-  // Exclude own repos with -user: to show only external open source contributions
-  const apiUrl = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public+-user:${username}&per_page=100&sort=updated&order=desc`;
+
+  const PER_PAGE = 6;
+  let currentPage = 1;
+  let totalCount = 0;
+
+  function apiUrl(page) {
+    return `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public+-user:${username}&per_page=${PER_PAGE}&page=${page}&sort=updated&order=desc`;
+  }
 
   function timeAgo(dateStr) {
     const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -42,7 +48,46 @@
     return match ? match[1] : '';
   }
 
-  function renderPRs(items) {
+  function renderPagination() {
+    const totalPages = Math.ceil(Math.min(totalCount, 1000) / PER_PAGE);
+    if (totalPages <= 1) return '';
+
+    const pages = [];
+
+    // Always show first page
+    pages.push(1);
+
+    // Show ellipsis and surrounding pages
+    if (currentPage > 3) pages.push('...');
+    for (let p = Math.max(2, currentPage - 1); p <= Math.min(totalPages - 1, currentPage + 1); p++) {
+      pages.push(p);
+    }
+    if (currentPage < totalPages - 2) pages.push('...');
+
+    // Always show last page
+    if (totalPages > 1) pages.push(totalPages);
+
+    const pageButtons = pages.map(p => {
+      if (p === '...') return `<span class="gh-pagination-ellipsis">…</span>`;
+      const active = p === currentPage ? ' gh-pagination-btn--active' : '';
+      return `<button class="gh-pagination-btn${active}" data-page="${p}" ${p === currentPage ? 'aria-current="page"' : ''}>${p}</button>`;
+    }).join('');
+
+    const prevDisabled = currentPage === 1 ? ' disabled' : '';
+    const nextDisabled = currentPage === totalPages ? ' disabled' : '';
+
+    return `
+      <div class="gh-pagination">
+        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${currentPage - 1}"${prevDisabled} aria-label="Previous page">&#8592;</button>
+        ${pageButtons}
+        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${currentPage + 1}"${nextDisabled} aria-label="Next page">&#8594;</button>
+      </div>`;
+  }
+
+  function renderPRs(data) {
+    const items = data.items || [];
+    totalCount = data.total_count || 0;
+
     if (!items.length) {
       container.innerHTML = '<p class="gh-pr-empty">No open source pull requests found.</p>';
       return;
@@ -70,9 +115,12 @@
             </div>
           </div>
         </div>
-        </div>
       </div>`;
     }).join('');
+
+    const totalPages = Math.ceil(Math.min(totalCount, 1000) / PER_PAGE);
+    const start = (currentPage - 1) * PER_PAGE + 1;
+    const end = Math.min(currentPage * PER_PAGE, totalCount);
 
     container.innerHTML = `
       <div class="gh-pr-header">
@@ -83,15 +131,39 @@
         <span class="gh-pr-count gh-pr-count--closed">
           ${closedCount} Closed
         </span>
+        <span class="gh-pr-page-info">
+          ${start}–${end} of ${totalCount}
+        </span>
       </div>
-      <div class="gh-pr-items">${cards}</div>`;
+      <div class="gh-pr-items">${cards}</div>
+      ${renderPagination()}`;
+
+    // Attach pagination click handlers
+    container.querySelectorAll('.gh-pagination-btn[data-page]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = parseInt(btn.dataset.page, 10);
+        if (!isNaN(page) && page !== currentPage) {
+          currentPage = page;
+          loadPage();
+        }
+      });
+    });
   }
 
-  fetch(apiUrl, { headers: { Accept: 'application/vnd.github.v3+json' } })
-    .then(r => r.json())
-    .then(data => renderPRs(data.items || []))
-    .catch(() => {
-      container.innerHTML = '<p class="gh-pr-empty">Failed to load pull requests. GitHub API rate limit may have been exceeded.</p>';
-    });
+  function loadPage() {
+    container.innerHTML = `
+      <div class="gh-pr-loading">
+        <span class="gh-spinner"></span> Loading pull requests...
+      </div>`;
+
+    fetch(apiUrl(currentPage), { headers: { Accept: 'application/vnd.github.v3+json' } })
+      .then(r => r.json())
+      .then(data => renderPRs(data))
+      .catch(() => {
+        container.innerHTML = '<p class="gh-pr-empty">Failed to load pull requests. GitHub API rate limit may have been exceeded.</p>';
+      });
+  }
+
+  loadPage();
 })();
 </script>
