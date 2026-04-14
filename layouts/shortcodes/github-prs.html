@@ -13,7 +13,7 @@
   const container = document.getElementById('gh-pr-list');
   const username = container.dataset.username;
 
-  const PER_PAGE = 6;
+  const PER_PAGE = 5;
   let currentPage = 1;
   let totalCount = 0;
 
@@ -38,6 +38,8 @@
   function statusIcon(item) {
     if (item.pull_request && item.pull_request.merged_at)
       return icon('icon-pr-merged', 'gh-pr-icon gh-pr-icon--merged');
+    if (item.draft)
+      return icon('icon-pr-draft', 'gh-pr-icon gh-pr-icon--draft');
     if (item.state === 'open')
       return icon('icon-pr-open', 'gh-pr-icon gh-pr-icon--open');
     return icon('icon-pr-closed', 'gh-pr-icon gh-pr-icon--closed');
@@ -99,7 +101,11 @@
     const cards = items.map(item => {
       const repo = repoFromUrl(item.repository_url);
       const isMerged = item.pull_request && item.pull_request.merged_at;
-      const statusLabel = isMerged ? 'Merged' : (item.state === 'open' ? 'Open' : 'Closed');
+      const statusLabel = isMerged ? 'Merged' : (item.draft ? 'Draft' : (item.state === 'open' ? 'Open' : 'Closed'));
+      const association = item.author_association;
+      const showBadge = association && association !== 'NONE';
+      const badgeLabel = association ? association.charAt(0) + association.slice(1).toLowerCase() : '';
+      const associationBadge = showBadge ? `<span class="gh-pr-association">${badgeLabel}</span>` : '';
 
       return `
       <div class="gh-pr-item">
@@ -111,7 +117,7 @@
               <a class="gh-pr-link" href="${item.html_url}" target="_blank" rel="noopener">${item.title}</a>
             </div>
             <div class="gh-pr-meta">
-              #${item.number} &bull; ${statusLabel} ${timeAgo(isMerged ? item.pull_request.merged_at : item.created_at)} by ${item.user.login}
+              #${item.number} by ${item.user.login} ${associationBadge} ${statusLabel} ${timeAgo(isMerged ? item.pull_request.merged_at : item.created_at)}
             </div>
           </div>
         </div>
