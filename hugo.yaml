@@ -4,6 +4,10 @@ title: Guancioul Blog
 theme: ["PaperMod"]
 menu:
   main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 5
     - identifier: open-source
       name: Open Source
       url: /open-source/
@@ -11,3 +15,10 @@ menu:
 caches:
   images:
     dir: :cacheDir/images
+
+module:
+  mounts:
+    - source: static
+      target: static
+    - source: third_party/devstats-viewer/src
+      target: static/vendor/devstats-viewer

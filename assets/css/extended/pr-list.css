@@ -257,3 +257,71 @@
   font-size: 13px;
   user-select: none;
 }
+
+/* ── DevStat widget ──────────────────────────────────────────────────────── */
+
+.devstat {
+  font-size: 14px;
+}
+
+.hidden { display: none !important; }
+
+.devstat-score-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.devstat-card {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 16px;
+  background: var(--code-bg, #161b22);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+}
+
+.devstat-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+.devstat-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.devstat-sub {
+  font-size: 13px;
+  color: var(--secondary);
+}
+
+.devstat-raw {
+  margin-top: 8px;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.devstat-raw summary {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--secondary);
+  cursor: pointer;
+  background: var(--code-bg, #161b22);
+}
+.devstat-raw pre {
+  margin: 0;
+  padding: 12px;
+  font-size: 12px;
+  overflow-x: auto;
+}
