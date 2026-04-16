@@ -1,9 +1,67 @@
-/* GitHub-style PR list */
+/* GitHub-style contributions (Issues + PRs) */
+
+/* Tab navigation */
+.gh-contributions {
+  font-size: 14px;
+}
+
+.gh-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border, #30363d);
+  margin-bottom: 0;
+  padding: 0 8px;
+  background: var(--code-bg, #161b22);
+  border-radius: 6px 6px 0 0;
+}
+
+.gh-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.gh-tab:hover { color: var(--primary); }
+.gh-tab--active {
+  color: var(--primary);
+  border-bottom-color: #f78166;
+  font-weight: 600;
+}
+
+.gh-tab-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.gh-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 0 6px;
+  height: 20px;
+  background: var(--border, #30363d);
+  border-radius: 2em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* List panel — borders connect to the tabs above */
 .gh-pr-list {
   border: 1px solid var(--border, #30363d);
-  border-radius: 6px;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
   overflow: hidden;
-  font-size: 14px;
 }
 
 .gh-pr-loading {
@@ -74,10 +132,11 @@
   margin-top: 2px;
   fill: currentColor;
 }
-.gh-pr-icon--open   { color: #3fb950; }
-.gh-pr-icon--merged { color: #a371f7; }
-.gh-pr-icon--closed { color: #f85149; }
-.gh-pr-icon--draft  { color: #8b949e; }
+.gh-pr-icon--open          { color: #3fb950; }
+.gh-pr-icon--merged        { color: #a371f7; }
+.gh-pr-icon--closed        { color: #f85149; }
+.gh-pr-icon--issue-closed  { color: #a371f7; }
+.gh-pr-icon--draft         { color: #8b949e; }
 .gh-pr-icon--sm     { width: 14px; height: 14px; }
 
 .gh-pr-info { min-width: 0; }

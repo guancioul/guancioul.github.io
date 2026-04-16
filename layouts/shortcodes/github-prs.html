@@ -2,31 +2,72 @@
 
 {{ partial "pr-icons.html" . }}
 
-<div class="gh-pr-list" id="gh-pr-list" data-username="{{ $username }}">
-  <div class="gh-pr-loading">
-    <span class="gh-spinner"></span> Loading pull requests...
+<div class="gh-contributions" id="gh-contributions" data-username="{{ $username }}">
+  <nav class="gh-tabs" role="tablist">
+    <button class="gh-tab gh-tab--active" role="tab" data-tab="prs" aria-selected="true">
+      <svg class="gh-tab-icon" aria-hidden="true"><use href="#icon-pr-open"></use></svg>
+      Pull Requests
+      <span class="gh-tab-count" id="gh-prs-count">…</span>
+    </button>
+    <button class="gh-tab" role="tab" data-tab="issues" aria-selected="false">
+      <svg class="gh-tab-icon" aria-hidden="true"><use href="#icon-issue-open"></use></svg>
+      Issues
+      <span class="gh-tab-count" id="gh-issues-count">…</span>
+    </button>
+  </nav>
+
+  <div class="gh-pr-list" id="gh-pr-list" data-active="true">
+    <div class="gh-pr-loading"><span class="gh-spinner"></span> Loading pull requests...</div>
+  </div>
+  <div class="gh-pr-list" id="gh-issue-list" data-active="false" style="display:none">
+    <div class="gh-pr-loading"><span class="gh-spinner"></span> Loading issues...</div>
   </div>
 </div>
 
 <script>
 (function () {
-  const container = document.getElementById('gh-pr-list');
-  const username = container.dataset.username;
+  const root     = document.getElementById('gh-contributions');
+  const username = root.dataset.username;
 
   const PER_PAGE = 5;
-  let currentPage = 1;
-  let totalCount = 0;
 
-  function apiUrl(page) {
-    return `https://api.github.com/search/issues?q=author:${username}+type:pr+is:public+-user:${username}&per_page=${PER_PAGE}&page=${page}&sort=updated&order=desc`;
+  const panels = {
+    issues: {
+      container:    document.getElementById('gh-issue-list'),
+      countEl:      document.getElementById('gh-issues-count'),
+      type:         'issue',
+      currentPage:  1,
+      totalCount:   0,
+      loaded:       false,
+    },
+    prs: {
+      container:    document.getElementById('gh-pr-list'),
+      countEl:      document.getElementById('gh-prs-count'),
+      type:         'pr',
+      currentPage:  1,
+      totalCount:   0,
+      loaded:       false,
+    },
+  };
+
+  let activeTab = 'prs';
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+
+  function apiUrl(type, page) {
+    // For issues: include both authored and assigned issues via involves:
+    const qualifier = type === 'issue'
+      ? `involves:${username}+type:issue`
+      : `author:${username}+type:pr`;
+    return `https://api.github.com/search/issues?q=${qualifier}+is:public+-user:${username}&per_page=${PER_PAGE}&page=${page}&sort=updated&order=desc`;
   }
 
   function timeAgo(dateStr) {
     const diff = (Date.now() - new Date(dateStr)) / 1000;
-    if (diff < 60) return `${Math.floor(diff)} seconds ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    if (diff < 2592000) return `${Math.floor(diff / 86400)} days ago`;
+    if (diff < 60)       return `${Math.floor(diff)} seconds ago`;
+    if (diff < 3600)     return `${Math.floor(diff / 60)} minutes ago`;
+    if (diff < 86400)    return `${Math.floor(diff / 3600)} hours ago`;
+    if (diff < 2592000)  return `${Math.floor(diff / 86400)} days ago`;
     if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
     return `${Math.floor(diff / 31536000)} years ago`;
   }
@@ -35,7 +76,14 @@
     return `<svg class="${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
   }
 
-  function statusIcon(item) {
+  function repoFromUrl(url) {
+    const m = url.match(/repos\/([^/]+\/[^/]+)\//);
+    return m ? m[1] : '';
+  }
+
+  // ── Status icons ─────────────────────────────────────────────────────────
+
+  function prStatusIcon(item) {
     if (item.pull_request && item.pull_request.merged_at)
       return icon('icon-pr-merged', 'gh-pr-icon gh-pr-icon--merged');
     if (item.draft)
@@ -45,131 +93,172 @@
     return icon('icon-pr-closed', 'gh-pr-icon gh-pr-icon--closed');
   }
 
-  function repoFromUrl(url) {
-    const match = url.match(/repos\/([^/]+\/[^/]+)\//);
-    return match ? match[1] : '';
+  function issueStatusIcon(item) {
+    if (item.state === 'open')
+      return icon('icon-issue-open', 'gh-pr-icon gh-pr-icon--open');
+    return icon('icon-issue-closed', 'gh-pr-icon gh-pr-icon--issue-closed');
   }
 
-  function renderPagination() {
-    const totalPages = Math.ceil(Math.min(totalCount, 1000) / PER_PAGE);
+  // ── Pagination HTML ───────────────────────────────────────────────────────
+
+  function renderPagination(panel) {
+    const totalPages = Math.ceil(Math.min(panel.totalCount, 1000) / PER_PAGE);
     if (totalPages <= 1) return '';
 
-    const pages = [];
-
-    // Always show first page
-    pages.push(1);
-
-    // Show ellipsis and surrounding pages
-    if (currentPage > 3) pages.push('...');
-    for (let p = Math.max(2, currentPage - 1); p <= Math.min(totalPages - 1, currentPage + 1); p++) {
+    const pages = [1];
+    if (panel.currentPage > 3) pages.push('...');
+    for (let p = Math.max(2, panel.currentPage - 1); p <= Math.min(totalPages - 1, panel.currentPage + 1); p++) {
       pages.push(p);
     }
-    if (currentPage < totalPages - 2) pages.push('...');
-
-    // Always show last page
+    if (panel.currentPage < totalPages - 2) pages.push('...');
     if (totalPages > 1) pages.push(totalPages);
 
     const pageButtons = pages.map(p => {
       if (p === '...') return `<span class="gh-pagination-ellipsis">…</span>`;
-      const active = p === currentPage ? ' gh-pagination-btn--active' : '';
-      return `<button class="gh-pagination-btn${active}" data-page="${p}" ${p === currentPage ? 'aria-current="page"' : ''}>${p}</button>`;
+      const active = p === panel.currentPage ? ' gh-pagination-btn--active' : '';
+      return `<button class="gh-pagination-btn${active}" data-page="${p}" ${p === panel.currentPage ? 'aria-current="page"' : ''}>${p}</button>`;
     }).join('');
 
-    const prevDisabled = currentPage === 1 ? ' disabled' : '';
-    const nextDisabled = currentPage === totalPages ? ' disabled' : '';
+    const prevDisabled = panel.currentPage === 1          ? ' disabled' : '';
+    const nextDisabled = panel.currentPage === totalPages ? ' disabled' : '';
 
     return `
       <div class="gh-pagination">
-        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${currentPage - 1}"${prevDisabled} aria-label="Previous page">&#8592;</button>
+        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${panel.currentPage - 1}"${prevDisabled} aria-label="Previous page">&#8592;</button>
         ${pageButtons}
-        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${currentPage + 1}"${nextDisabled} aria-label="Next page">&#8594;</button>
+        <button class="gh-pagination-btn gh-pagination-btn--nav" data-page="${panel.currentPage + 1}"${nextDisabled} aria-label="Next page">&#8594;</button>
       </div>`;
   }
 
-  function renderPRs(data) {
+  // ── Render items ──────────────────────────────────────────────────────────
+
+  function renderItems(panel, data) {
     const items = data.items || [];
-    totalCount = data.total_count || 0;
+    panel.totalCount = data.total_count || 0;
+
+    // Update tab count badge once we have the real number
+    panel.countEl.textContent = panel.totalCount;
 
     if (!items.length) {
-      container.innerHTML = '<p class="gh-pr-empty">No open source pull requests found.</p>';
+      panel.container.innerHTML = `<p class="gh-pr-empty">No contributions found.</p>`;
       return;
     }
 
-    const openCount = items.filter(i => i.state === 'open').length;
+    const isPR  = panel.type === 'pr';
+    const openCount   = items.filter(i => i.state === 'open').length;
     const closedCount = items.filter(i => i.state !== 'open').length;
 
     const cards = items.map(item => {
-      const repo = repoFromUrl(item.repository_url);
-      const isMerged = item.pull_request && item.pull_request.merged_at;
-      const statusLabel = isMerged ? 'Merged' : (item.draft ? 'Draft' : (item.state === 'open' ? 'Open' : 'Closed'));
+      const repo        = repoFromUrl(item.repository_url);
+      const isMerged    = item.pull_request && item.pull_request.merged_at;
+      const statusLabel = isMerged ? 'Merged'
+                        : item.draft ? 'Draft'
+                        : item.state === 'open' ? 'Open' : 'Closed';
       const association = item.author_association;
-      const showBadge = association && association !== 'NONE';
-      const badgeLabel = association ? association.charAt(0) + association.slice(1).toLowerCase() : '';
-      const associationBadge = showBadge ? `<span class="gh-pr-association">${badgeLabel}</span>` : '';
+      const showBadge   = association && association !== 'NONE';
+      const badgeLabel  = association ? association.charAt(0) + association.slice(1).toLowerCase() : '';
+      const assocBadge  = showBadge ? `<span class="gh-pr-association">${badgeLabel}</span>` : '';
+      const statusIco   = isPR ? prStatusIcon(item) : issueStatusIcon(item);
+      const dateVal     = isMerged ? item.pull_request.merged_at : item.created_at;
 
       return `
       <div class="gh-pr-item">
         <div class="gh-pr-left">
-          ${statusIcon(item)}
+          ${statusIco}
           <div class="gh-pr-info">
             <div class="gh-pr-title">
               <span class="gh-pr-repo">${repo}</span>
               <a class="gh-pr-link" href="${item.html_url}" target="_blank" rel="noopener">${item.title}</a>
             </div>
             <div class="gh-pr-meta">
-              #${item.number} by ${item.user.login} ${associationBadge} ${statusLabel} ${timeAgo(isMerged ? item.pull_request.merged_at : item.created_at)}
+              #${item.number} by ${item.user.login} ${assocBadge} ${statusLabel} ${timeAgo(dateVal)}
             </div>
           </div>
         </div>
       </div>`;
     }).join('');
 
-    const totalPages = Math.ceil(Math.min(totalCount, 1000) / PER_PAGE);
-    const start = (currentPage - 1) * PER_PAGE + 1;
-    const end = Math.min(currentPage * PER_PAGE, totalCount);
+    const totalPages = Math.ceil(Math.min(panel.totalCount, 1000) / PER_PAGE);
+    const start = (panel.currentPage - 1) * PER_PAGE + 1;
+    const end   = Math.min(panel.currentPage * PER_PAGE, panel.totalCount);
 
-    container.innerHTML = `
+    const openIconHtml = isPR
+      ? icon('icon-pr-open', 'gh-pr-icon gh-pr-icon--open gh-pr-icon--sm')
+      : icon('icon-issue-open', 'gh-pr-icon gh-pr-icon--open gh-pr-icon--sm');
+
+    panel.container.innerHTML = `
       <div class="gh-pr-header">
         <span class="gh-pr-count gh-pr-count--open">
-          ${icon('icon-pr-open', 'gh-pr-icon gh-pr-icon--open gh-pr-icon--sm')}
+          ${openIconHtml}
           ${openCount} Open
         </span>
         <span class="gh-pr-count gh-pr-count--closed">
           ${closedCount} Closed
         </span>
-        <span class="gh-pr-page-info">
-          ${start}–${end} of ${totalCount}
-        </span>
+        <span class="gh-pr-page-info">${start}–${end} of ${panel.totalCount}</span>
       </div>
       <div class="gh-pr-items">${cards}</div>
-      ${renderPagination()}`;
+      ${renderPagination(panel)}`;
 
-    // Attach pagination click handlers
-    container.querySelectorAll('.gh-pagination-btn[data-page]').forEach(btn => {
+    panel.container.querySelectorAll('.gh-pagination-btn[data-page]').forEach(btn => {
       btn.addEventListener('click', () => {
         const page = parseInt(btn.dataset.page, 10);
-        if (!isNaN(page) && page !== currentPage) {
-          currentPage = page;
-          loadPage();
+        if (!isNaN(page) && page !== panel.currentPage) {
+          panel.currentPage = page;
+          loadPanel(panel);
         }
       });
     });
   }
 
-  function loadPage() {
-    container.innerHTML = `
-      <div class="gh-pr-loading">
-        <span class="gh-spinner"></span> Loading pull requests...
-      </div>`;
+  // ── Load data ─────────────────────────────────────────────────────────────
 
-    fetch(apiUrl(currentPage), { headers: { Accept: 'application/vnd.github.v3+json' } })
+  function loadPanel(panel) {
+    const label = panel.type === 'pr' ? 'pull requests' : 'issues';
+    panel.container.innerHTML = `<div class="gh-pr-loading"><span class="gh-spinner"></span> Loading ${label}...</div>`;
+
+    fetch(apiUrl(panel.type, panel.currentPage), { headers: { Accept: 'application/vnd.github.v3+json' } })
       .then(r => r.json())
-      .then(data => renderPRs(data))
+      .then(data => { panel.loaded = true; renderItems(panel, data); })
       .catch(() => {
-        container.innerHTML = '<p class="gh-pr-empty">Failed to load pull requests. GitHub API rate limit may have been exceeded.</p>';
+        panel.container.innerHTML = `<p class="gh-pr-empty">Failed to load ${label}. GitHub API rate limit may have been exceeded.</p>`;
       });
   }
 
-  loadPage();
+  // ── Tab switching ─────────────────────────────────────────────────────────
+
+  root.querySelectorAll('.gh-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const key = tab.dataset.tab;
+      if (key === activeTab) return;
+      activeTab = key;
+
+      root.querySelectorAll('.gh-tab').forEach(t => {
+        const isActive = t.dataset.tab === key;
+        t.classList.toggle('gh-tab--active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      Object.entries(panels).forEach(([k, p]) => {
+        const show = k === key;
+        p.container.style.display = show ? '' : 'none';
+        p.container.dataset.active = show ? 'true' : 'false';
+        if (show && !p.loaded) loadPanel(p);
+      });
+    });
+  });
+
+  // ── Initial load ──────────────────────────────────────────────────────────
+
+  // Load counts for the inactive tab silently (just the first page for the count)
+  function fetchCount(panel) {
+    fetch(apiUrl(panel.type, 1), { headers: { Accept: 'application/vnd.github.v3+json' } })
+      .then(r => r.json())
+      .then(data => { panel.countEl.textContent = data.total_count || 0; })
+      .catch(() => { panel.countEl.textContent = '?'; });
+  }
+
+  loadPanel(panels.prs);
+  fetchCount(panels.issues);
 })();
 </script>
