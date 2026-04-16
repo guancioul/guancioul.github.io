@@ -1,0 +1,28 @@
+{{ $username := .Get "username" | default "guancioul" }}
+
+<div class="devstat">
+  <div class="devstat-card">
+    <span class="devstat-card-label">CNCF Score</span>
+    <span class="devstat-card-value" id="devstat-score">…</span>
+  </div>
+  <p class="devstat-sub" id="devstat-sub"></p>
+</div>
+
+<script>
+fetch('https://devstats.cncf.io/api/v1', {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ api: 'GithubIDContributions', payload: { github_id: '{{ $username }}' } }),
+})
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('devstat-score').textContent = data.contributions ?? '—';
+    document.getElementById('devstat-sub').textContent =
+      data.prs != null ? 'PRs: ' + data.prs + '  |  Issues: ' + data.issues : '';
+  })
+  .catch(() => {
+    document.getElementById('devstat-score').textContent = '—';
+  });
+</script>
