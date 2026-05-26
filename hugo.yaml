@@ -12,6 +12,9 @@ menu:
       name: Open Source
       url: /open-source/
       weight: 10
+params:
+  github_username: guancioul
+
 caches:
   images:
     dir: :cacheDir/images
