@@ -1,0 +1,14 @@
+{{ range site.Data.highlights }}
+<div class="highlight-item">
+  <div class="highlight-repo">{{ .repo }}</div>
+  <a class="highlight-title" href="{{ .issue_url }}" target="_blank" rel="noopener">{{ .title }}</a>
+  <div class="highlight-desc">{{ .description }}</div>
+  <div class="highlight-prs">
+    {{ range .prs }}
+    <a class="highlight-pr-badge" href="{{ .url }}" target="_blank" rel="noopener">
+      {{ .repo }}#{{ .number }}
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
