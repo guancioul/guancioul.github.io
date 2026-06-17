@@ -7,8 +7,8 @@ export const githubUrl = 'https://github.com/guancioul';
 export type SocialIconKey = 'github' | 'email' | 'linkedin' | 'leetcode';
 
 export const socialLinks: { label: string; href: string; icon: SocialIconKey }[] = [
-  { label: 'Website', href: 'https://guancioul.github.io', icon: 'github' },
-  { label: 'Email', href: 'mailto:guancioul@gmail.com', icon: 'email' },
+  { label: 'GitHub', href: githubUrl, icon: 'github' },
+  { label: 'Email', href: `mailto:${email}`, icon: 'email' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kuan-hao-lai-1869b12ab', icon: 'linkedin' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/guancioul', icon: 'leetcode' },
 ];
