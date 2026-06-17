@@ -1,0 +1,115 @@
+.leetcode-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.leetcode-stats__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.leetcode-stats__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.leetcode-stats__divider {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .leetcode-stats__summary {
+    flex-wrap: nowrap;
+  }
+
+  .leetcode-stats__divider {
+    display: block;
+  }
+}
+
+.leetcode-stats__stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.leetcode-stats__stat-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.leetcode-stats__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+}
+
+.leetcode-stats__difficulty {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.leetcode-stats__bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.leetcode-stats__bar-segment--easy {
+  background: #00af9b;
+}
+
+.leetcode-stats__bar-segment--medium {
+  background: #ffa116;
+}
+
+.leetcode-stats__bar-segment--hard {
+  background: #ff375f;
+}
+
+.leetcode-stats__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.leetcode-stats__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leetcode-stats__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.leetcode-stats__dot--easy {
+  background: #00af9b;
+}
+
+.leetcode-stats__dot--medium {
+  background: #ffa116;
+}
+
+.leetcode-stats__dot--hard {
+  background: #ff375f;
+}
+
+.leetcode-stats__empty {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}

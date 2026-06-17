@@ -34,11 +34,9 @@ export function DevStat({ username }: { username: string }) {
   const score = failed ? '—' : data?.contributions ?? '…';
 
   return (
-    <div className="devstat">
-      <div className="devstat-card devstat-card--score">
-        <span className="devstat-card-label">CNCF Score</span>
-        <span className="devstat-card-value">{score}</span>
-      </div>
-    </div>
+    <span className="devstat-inline">
+      <span className="devstat-card-label">CNCF Score</span>
+      <span className="devstat-card-value mono">{score}</span>
+    </span>
   );
 }

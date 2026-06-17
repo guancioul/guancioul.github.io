@@ -1,4 +1,5 @@
 export const githubUsername = 'guancioul';
+export const leetcodeUsername = 'guancioul';
 export const name = 'Kuan-Hao Lai';
 export const role = 'Software Engineer';
 export const email = 'guancioul@gmail.com';
@@ -31,6 +32,8 @@ export const techStack: TechGroup[] = [
 
 export const certification = {
   name: 'Certified Kubernetes Administrator (CKA)',
+  issuer: 'Linux Foundation / CNCF',
+  year: '2026',
   url: 'https://www.credly.com/badges/cce95b77-8cb7-42e9-a598-7ddbeb805e64',
   image: 'https://images.credly.com/size/340x340/images/8b8ed108-e77d-4396-ac59-2504583b9d54/cka_from_cncfsite__281_29.png',
 };

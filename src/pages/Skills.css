@@ -1,0 +1,72 @@
+.skill-panel {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.skill-panel__header {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skill-panel__row {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skill-panel__row:last-child {
+  border-bottom: none;
+}
+
+.skill-panel__row-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.skill-panel__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.skill-panel__row--cert {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.skill-panel__row--cert:hover .skill-panel__cert-name {
+  text-decoration: underline;
+}
+
+.skill-panel__cert-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.skill-panel__cert-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
