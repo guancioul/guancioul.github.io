@@ -3,6 +3,8 @@ import './ScrollDots.css';
 const sections = [
   { id: 'hero', label: 'Hero' },
   { id: 'about', label: 'About' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'skills', label: 'Skills' },
   { id: 'open-source', label: 'Open Source' },
 ];
 

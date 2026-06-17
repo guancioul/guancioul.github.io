@@ -1,0 +1,20 @@
+.open-source__notable-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.open-source__notable-link:hover {
+  text-decoration: underline;
+}
+
+.open-source__cncf-panel {
+  margin-top: 24px;
+}
+
+.open-source__cncf-row {
+  align-items: center;
+}

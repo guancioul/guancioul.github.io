@@ -1,0 +1,39 @@
+.notable-contributions {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+
+.notable-contributions h1 {
+  font-size: 32px;
+  margin: 0 0 40px;
+}
+
+.contributions-group {
+  margin-bottom: 32px;
+  scroll-margin-top: 80px;
+}
+
+.contributions-group:last-child {
+  margin-bottom: 0;
+}
+
+.contributions-group__title {
+  margin: 0 0 16px;
+}
+
+.contributions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .notable-contributions {
+    padding: 48px 20px;
+  }
+
+  .contributions-grid {
+    grid-template-columns: 1fr;
+  }
+}

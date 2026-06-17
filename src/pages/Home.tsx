@@ -4,9 +4,11 @@ import { Hero } from '../components/Hero';
 import { ScrollDots } from '../components/ScrollDots';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { About } from './About';
+import { Experience } from './Experience';
+import { Skills } from './Skills';
 import { OpenSource } from './OpenSource';
 
-const SECTION_IDS = ['hero', 'about', 'open-source'];
+const SECTION_IDS = ['hero', 'about', 'experience', 'skills', 'open-source'];
 
 export function Home() {
   const activeSection = useActiveSection(SECTION_IDS);
@@ -27,6 +29,8 @@ export function Home() {
     <>
       <Hero />
       <About />
+      <Experience />
+      <Skills />
       <OpenSource />
       <ScrollDots activeSection={activeSection} />
     </>

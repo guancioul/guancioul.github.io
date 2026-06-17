@@ -1,0 +1,129 @@
+.pr-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  text-decoration: none;
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+.pr-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 0;
+}
+
+.pr-card__link-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.pr-card__org-avatar {
+  border-radius: 6px;
+}
+
+.pr-card__repo {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  padding: 10px 16px 0;
+}
+
+.pr-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 4px 16px 0;
+}
+
+.pr-card__number {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.pr-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  padding: 10px 16px 0;
+}
+
+.pr-card__diff {
+  font-size: 12px;
+  padding: 6px 16px 0;
+}
+
+.pr-card__additions {
+  color: #2da44e;
+}
+
+.pr-card__deletions {
+  color: #cf222e;
+}
+
+.pr-card__diffbar {
+  display: flex;
+  height: 4px;
+  margin: 6px 16px 0;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.pr-card__diffbar-add {
+  background: #2da44e;
+}
+
+.pr-card__diffbar-del {
+  background: #cf222e;
+}
+
+.pr-card__author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  padding: 10px 16px 14px;
+}
+
+.pr-card__author img {
+  border-radius: 50%;
+}
+
+.pr-card__footer {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+  padding: 14px 16px;
+  margin-top: auto;
+}
+
+.pr-card__footer-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pr-card__footer-source {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.pr-card__footer-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
