@@ -1,0 +1,48 @@
+.social-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.social-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.social-badge:hover {
+  border-color: var(--badge-color, var(--color-accent));
+  color: var(--badge-color, var(--color-accent));
+}
+
+.social-badge__icon {
+  width: 14px;
+  height: 14px;
+  color: var(--badge-color, var(--color-text));
+}
+
+.social-badge--github {
+  --badge-color: #1f2328;
+}
+
+.social-badge--email {
+  --badge-color: #d14836;
+}
+
+.social-badge--linkedin {
+  --badge-color: #0a66c2;
+}
+
+.social-badge--leetcode {
+  --badge-color: #ffa116;
+}
