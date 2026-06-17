@@ -4,6 +4,7 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { BlogList } from './pages/BlogList';
 import { BlogPost } from './pages/BlogPost';
+import { NotFound } from './pages/NotFound';
 import { useActiveSection } from './hooks/useActiveSection';
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </main>
