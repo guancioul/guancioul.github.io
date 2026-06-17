@@ -43,11 +43,12 @@
 .section-heading {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 }
 
 .section-heading__number {
   font-size: 14px;
+  line-height: 1;
   color: var(--color-accent);
 }
 
