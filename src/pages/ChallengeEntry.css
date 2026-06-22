@@ -1,0 +1,85 @@
+.challenge-entry-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+
+.challenge-entry-page__back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+
+.challenge-entry-page__back:hover {
+  color: var(--color-accent);
+}
+
+.challenge-entry-page__title {
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.challenge-entry-page__date {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.challenge-entry-page__body h2 {
+  font-size: 20px;
+  margin: 32px 0 12px;
+}
+
+.challenge-entry-page__body p {
+  color: var(--color-text);
+  margin: 0 0 16px;
+  line-height: 1.7;
+}
+
+.challenge-entry-page__body ul {
+  margin: 0 0 16px;
+  padding-left: 4px;
+  list-style: none;
+  color: var(--color-text);
+}
+
+.challenge-entry-page__body li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 0;
+  line-height: 1.5;
+}
+
+.challenge-entry-page__body li input[type='checkbox'] {
+  flex-shrink: 0;
+  accent-color: var(--color-accent);
+}
+
+.challenge-entry-page__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.challenge-entry-page__nav-link {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.challenge-entry-page__nav-link:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .challenge-entry-page {
+    padding: 48px 20px;
+  }
+}

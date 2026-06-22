@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { name } from '../data/profile';
+import { useTheme } from '../hooks/useTheme';
+import { MoonIcon, SunIcon } from './ThemeIcons';
 import './Header.css';
 
 const navItems = [
@@ -14,8 +16,10 @@ export function Header({ activeSection }: { activeSection: string }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const isHome = location.pathname === '/';
   const isBlog = location.pathname.startsWith('/blog');
+  const isChallenges = location.pathname.startsWith('/challenges');
 
   function handleSectionClick(id: string) {
     setMenuOpen(false);
@@ -69,6 +73,21 @@ export function Header({ activeSection }: { activeSection: string }) {
         >
           Blog
         </Link>
+        <Link
+          to="/challenges"
+          className={`site-header__link${isChallenges ? ' site-header__link--active' : ''}`}
+          onClick={() => setMenuOpen(false)}
+        >
+          Challenges
+        </Link>
+        <button
+          type="button"
+          className="site-header__theme-toggle"
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          onClick={toggleTheme}
+        >
+          {theme === 'dark' ? <SunIcon className="site-header__theme-icon" /> : <MoonIcon className="site-header__theme-icon" />}
+        </button>
       </nav>
     </header>
   );
