@@ -20,6 +20,7 @@ export function Header({ activeSection }: { activeSection: string }) {
   const isHome = location.pathname === '/';
   const isBlog = location.pathname.startsWith('/blog');
   const isChallenges = location.pathname.startsWith('/challenges');
+  const isTravel = location.pathname.startsWith('/travel');
 
   function handleSectionClick(id: string) {
     setMenuOpen(false);
@@ -79,6 +80,13 @@ export function Header({ activeSection }: { activeSection: string }) {
           onClick={() => setMenuOpen(false)}
         >
           Challenges
+        </Link>
+        <Link
+          to="/travel"
+          className={`site-header__link${isTravel ? ' site-header__link--active' : ''}`}
+          onClick={() => setMenuOpen(false)}
+        >
+          Travel
         </Link>
         <button
           type="button"

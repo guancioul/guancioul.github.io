@@ -1,11 +1,16 @@
+import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getPostBySlug } from '../lib/posts';
+import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import './BlogPost.css';
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useMarkdownEmbeds(bodyRef, post?.content);
 
   if (!post) {
     return (
@@ -36,7 +41,11 @@ export function BlogPost() {
           </div>
         )}
       </div>
-      <div className="blog-post__body" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }} />
+      <div
+        ref={bodyRef}
+        className="blog-post__body"
+        dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+      />
     </div>
   );
 }

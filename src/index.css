@@ -59,3 +59,172 @@ h3 {
 button {
   font-family: inherit;
 }
+
+/* Markdown content embeds — usable in any markdown body rendered via
+   dangerouslySetInnerHTML (blog posts, challenge entries, travel write-ups),
+   wired up by the useMarkdownEmbeds hook:
+   <div class="md-gallery" data-columns="2"><img src="..."> ...</div> —
+     masonry grid (default 3 columns, override with data-columns), click a
+     photo to open a zoomed preview; click outside it (or Escape) to close.
+   <div class="md-carousel"><img src="..."> ...</div> — auto-advancing
+     slideshow that only plays while scrolled into view, with prev/next
+     buttons and swipe/drag support for manual navigation.
+   <div class="md-full-bleed"><img src="..."></div> — full viewport-width
+     image, pure CSS, no JS needed. */
+
+.md-gallery {
+  column-count: var(--md-gallery-columns, 3);
+  column-gap: 10px;
+  width: min(950px, 92vw);
+  margin-top: 0;
+  margin-bottom: 16px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.md-gallery img {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px;
+  border-radius: 8px;
+  background: var(--color-border);
+  cursor: zoom-in;
+  break-inside: avoid;
+}
+
+.md-gallery--dimmed img {
+  opacity: 0.12;
+  transition: opacity 0.3s ease;
+}
+
+.md-carousel {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-border);
+  width: min(950px, 92vw);
+  margin-top: 0;
+  margin-bottom: 16px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.md-carousel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.md-carousel img.is-active {
+  opacity: 1;
+}
+
+.md-carousel__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.md-carousel__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.md-carousel__dot.is-active {
+  background: #fff;
+}
+
+.md-carousel__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  z-index: 1;
+}
+
+.md-carousel__nav:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.md-carousel__nav--prev {
+  left: 12px;
+}
+
+.md-carousel__nav--next {
+  right: 12px;
+}
+
+.md-full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: 16px;
+}
+
+.md-full-bleed img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.md-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.md-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.md-lightbox__photo {
+  position: fixed;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .md-gallery,
+  .md-carousel {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .md-gallery {
+    column-count: 2;
+  }
+}
