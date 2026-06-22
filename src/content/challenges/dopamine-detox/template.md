@@ -12,4 +12,3 @@ title: Day N
 - [ ] No music
 
 ## Notes
-
