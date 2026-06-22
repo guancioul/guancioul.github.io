@@ -7,6 +7,10 @@ import './Skills.css';
 
 const techGroups = [...techStack, ...additionalSkills];
 
+// These icons are solid black SVGs with no theme-aware coloring, so they need
+// to be inverted in dark mode to stay visible against the dark background.
+const BLACK_FILL_ICONS = new Set(['Rust', 'Next.js']);
+
 export function Skills() {
   return (
     <section id="skills" className="page">
@@ -25,7 +29,15 @@ export function Skills() {
                   const iconUrl = techIconUrl(tag);
                   return (
                     <span className="skill-tag mono" key={tag}>
-                      {iconUrl && <img src={iconUrl} alt="" width={14} height={14} />}
+                      {iconUrl && (
+                        <img
+                          src={iconUrl}
+                          alt=""
+                          width={14}
+                          height={14}
+                          className={BLACK_FILL_ICONS.has(tag) ? 'skill-tag__icon--invert' : undefined}
+                        />
+                      )}
                       {tag}
                     </span>
                   );

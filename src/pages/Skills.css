@@ -48,6 +48,10 @@
   background: var(--color-bg);
 }
 
+:root[data-theme='dark'] .skill-tag__icon--invert {
+  filter: invert(1);
+}
+
 .skill-panel__row--cert {
   flex-direction: row;
   align-items: center;
