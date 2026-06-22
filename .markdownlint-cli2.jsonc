@@ -1,7 +1,8 @@
 {
   "config": {
     "default": true,
-    "MD013": false
+    "MD013": false,
+    "MD033": { "allowed_elements": ["div", "img"] }
   },
   "ignores": ["node_modules", "dist"]
 }

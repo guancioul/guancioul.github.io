@@ -1,0 +1,15 @@
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#efece6"/>
+  <g stroke="#ddd8cd" stroke-width="1">
+    <line x1="0" y1="90" x2="800" y2="90"/>
+    <line x1="0" y1="180" x2="800" y2="180"/>
+    <line x1="0" y1="270" x2="800" y2="270"/>
+    <line x1="0" y1="360" x2="800" y2="360"/>
+  </g>
+  <g transform="translate(550,150)" fill="none" stroke="#2a4d8f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 120 L60 0 L120 120 Z"/>
+    <path d="M40 120 L90 30 L140 120 Z"/>
+  </g>
+  <text x="60" y="270" font-family="JetBrains Mono, monospace" font-size="48" font-weight="700" fill="#2a4d8f">KYOTO</text>
+  <text x="60" y="340" font-family="Inter, sans-serif" font-size="28" font-weight="600" fill="#2b2722">AUTUMN TRIP</text>
+</svg>

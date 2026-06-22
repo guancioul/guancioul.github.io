@@ -1,12 +1,17 @@
+import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getChallengeBySlug } from '../lib/challenges';
+import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import './ChallengeEntry.css';
 
 export function ChallengeEntry() {
   const { slug, date } = useParams<{ slug: string; date: string }>();
   const challenge = slug ? getChallengeBySlug(slug) : undefined;
   const entry = challenge?.entries.find((e) => e.date === date);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useMarkdownEmbeds(bodyRef, entry?.content);
 
   if (!challenge || !entry) {
     return (
@@ -32,6 +37,7 @@ export function ChallengeEntry() {
       <h1 className="challenge-entry-page__title">{entry.title}</h1>
       <span className="challenge-entry-page__date mono">{entry.date}</span>
       <div
+        ref={bodyRef}
         className="challenge-entry-page__body"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(entry.content) }}
       />

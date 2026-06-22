@@ -1,0 +1,9 @@
+<svg width="600" height="860" viewBox="0 0 600 860" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="860" fill="#efece6"/>
+  <g fill="none" stroke="#a23b2e" stroke-width="14">
+    <path d="M100 250 H500 M120 190 V330 M480 190 V330"/>
+    <path d="M150 430 H450 M170 370 V510 M430 370 V510"/>
+    <path d="M180 610 H420 M195 560 V680 M405 560 V680"/>
+  </g>
+  <text x="40" y="800" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#2b2722">Fushimi Inari at Sunrise</text>
+</svg>
