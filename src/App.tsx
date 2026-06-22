@@ -6,6 +6,9 @@ import { Home } from './pages/Home';
 import { NotableContributions } from './pages/NotableContributions';
 import { BlogList } from './pages/BlogList';
 import { BlogPost } from './pages/BlogPost';
+import { Challenges } from './pages/Challenges';
+import { ChallengeDetail } from './pages/ChallengeDetail';
+import { ChallengeEntry } from './pages/ChallengeEntry';
 import { NotFound } from './pages/NotFound';
 import { useActiveSection } from './hooks/useActiveSection';
 import './App.css';
@@ -38,6 +41,9 @@ function App() {
             <Route path="/notable-contributions" element={<NotableContributions />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/challenges" element={<Challenges />} />
+            <Route path="/challenges/:slug" element={<ChallengeDetail />} />
+            <Route path="/challenges/:slug/:date" element={<ChallengeEntry />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

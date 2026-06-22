@@ -16,16 +16,10 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: var(--color-surface);
+  object-fit: cover;
+  background: #f8f6f1;
   border: 3px solid #fff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--color-text);
 }
 
 .hero__intro {
@@ -76,8 +70,8 @@
 }
 
 .hero__button--primary {
-  background: var(--color-text);
-  border-color: var(--color-text);
+  background: #2b2722;
+  border-color: #2b2722;
 }
 
 .hero__button--primary:hover {

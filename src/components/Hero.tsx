@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
 import { email, githubUrl, name, role } from '../data/profile';
+import personalPhoto from '../assets/avatar.png';
 import './Hero.css';
-
-function initialsOf(fullName: string) {
-  const parts = fullName.split(' ').filter(Boolean);
-  const first = parts[0]?.[0] ?? '';
-  const last = parts[parts.length - 1]?.[0] ?? '';
-  return (first + last).toUpperCase();
-}
 
 export function Hero() {
   return (
     <section id="hero" className="hero">
       <div className="hero__content">
-        <div className="hero__avatar">{initialsOf(name)}</div>
+        <img className="hero__avatar" src={personalPhoto} alt={name} />
+
         <div className="hero__intro">
           <p className="hero__eyebrow mono">PORTFOLIO</p>
           <h1 className="hero__name">{name}</h1>

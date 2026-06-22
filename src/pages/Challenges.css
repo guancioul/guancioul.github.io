@@ -1,0 +1,121 @@
+.challenges {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+
+.challenges h1 {
+  font-size: 32px;
+  margin: 0 0 40px;
+}
+
+.challenges__empty {
+  color: var(--color-text-muted);
+}
+
+.challenges__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.challenge-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.challenge-card__image {
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-border);
+}
+
+.challenge-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px 20px 20px;
+  gap: 8px;
+}
+
+.challenge-card__title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.challenge-card__dates {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.challenge-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.challenge-card__tag {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.challenge-card__summary {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.challenge-card__progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.challenge-card__progress-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.challenge-card__progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+
+.challenge-card__progress-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .challenges {
+    padding: 48px 20px;
+  }
+
+  .challenges__grid {
+    grid-template-columns: 1fr;
+  }
+}
