@@ -17,6 +17,7 @@ export interface Challenge {
   targetDays: number | null;
   tags: string[];
   summary: string;
+  rule: string;
   entries: ChallengeEntry[];
 }
 
@@ -130,6 +131,7 @@ function buildChallenge(metaPath: string, locale: Locale): Challenge {
     targetDays: data.targetDays ? Number(data.targetDays) : null,
     tags: tags ? tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
     summary: translation?.data.summary ?? data.summary ?? '',
+    rule: translation?.data.rule ?? data.rule ?? '',
     entries,
   };
 }

@@ -61,6 +61,13 @@
   font-size: 14px;
   color: var(--color-text-muted);
   line-height: 1.6;
+  margin: 0 0 8px;
+}
+
+.challenge-detail__rule {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
   margin: 0 0 20px;
 }
 
