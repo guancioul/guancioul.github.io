@@ -52,6 +52,7 @@ export function ChallengeDetail() {
       </div>
 
       {challenge.summary && <p className="challenge-detail__summary">{challenge.summary}</p>}
+      {challenge.rule && <p className="challenge-detail__rule">⚠️ {challenge.rule}</p>}
 
       <div className="challenge-detail__progress-row">
         {progress !== null ? (
