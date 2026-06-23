@@ -1,16 +1,18 @@
 import { Link } from 'react-router-dom';
 import { getAllChallenges } from '../lib/challenges';
+import { useTranslation } from '../hooks/useTranslation';
 import './Challenges.css';
 
 export function Challenges() {
-  const challenges = getAllChallenges();
+  const { t, locale } = useTranslation();
+  const challenges = getAllChallenges(locale);
 
   return (
     <div className="challenges">
-      <h1>Challenges</h1>
+      <h1>{t.nav.challenges}</h1>
 
       {challenges.length === 0 ? (
-        <p className="challenges__empty">No challenges yet.</p>
+        <p className="challenges__empty">{t.challenges.empty}</p>
       ) : (
         <div className="challenges__grid">
           {challenges.map((challenge) => {
@@ -47,11 +49,11 @@ export function Challenges() {
                           <div className="challenge-card__progress-fill" style={{ width: `${progress}%` }} />
                         </div>
                         <span className="challenge-card__progress-label mono">
-                          {entryCount}/{challenge.targetDays} days
+                          {t.challenges.daysProgress(entryCount, challenge.targetDays!)}
                         </span>
                       </>
                     ) : (
-                      <span className="challenge-card__progress-label mono">{entryCount} entries</span>
+                      <span className="challenge-card__progress-label mono">{t.challenges.entriesCount(entryCount)}</span>
                     )}
                   </div>
                 </div>

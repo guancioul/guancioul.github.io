@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { cacheGet, cacheSet } from '../lib/cache';
+import { mockLeetCodeData } from '../lib/mockData';
 import './LeetCodeStats.css';
 
 const CACHE_TTL = 60 * 60 * 1000;
@@ -26,6 +27,11 @@ export function LeetCodeStats({ username }: { username: string }) {
   useEffect(() => {
     const key = cacheKey(username);
     if (cacheGet<LeetCodeData>(key, CACHE_TTL)) return;
+
+    if (import.meta.env.DEV) {
+      Promise.resolve().then(() => setData(mockLeetCodeData));
+      return;
+    }
 
     Promise.all([
       fetch(`${API_BASE}/${username}/solved`).then((r) => r.json()),
