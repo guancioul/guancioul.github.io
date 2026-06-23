@@ -10,5 +10,3 @@ title: Day N
 - [ ] No alcohol & drugs
 - [ ] No porn
 - [ ] No music
-
-## Notes

@@ -5,5 +5,5 @@ startDate: 2026-06-23
 endDate: 2026-08-11
 targetDays: 50
 tags: Discipline, Fitness, Mindset
-summary: 50 days following 7 daily rules — wake before 8AM, exercise, reading, a new skill, clean eating, night routine, and journaling.
+summary: 50 days following 7 daily rules — wake before 8AM, exercise, reading, finish to-do list, clean eating, night routine, and journaling.
 ---
