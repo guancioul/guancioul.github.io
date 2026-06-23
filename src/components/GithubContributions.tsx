@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { cacheGet, cacheSet } from '../lib/cache';
+import { mockGithubItems } from '../lib/mockData';
 import {
   IssueClosedIcon,
   IssueOpenIcon,
@@ -39,6 +40,8 @@ function apiUrl(username: string, type: 'pr' | 'issue', page: number) {
 }
 
 async function fetchAll(username: string, type: 'pr' | 'issue'): Promise<GithubItem[]> {
+  if (import.meta.env.DEV) return mockGithubItems(type);
+
   const cached = cacheGet<GithubItem[]>(cacheKey(username, type), CACHE_TTL);
   if (cached) return cached;
 

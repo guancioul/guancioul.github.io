@@ -1,18 +1,20 @@
 import { Link, useParams } from 'react-router-dom';
 import { getChallengeBySlug } from '../lib/challenges';
+import { useTranslation } from '../hooks/useTranslation';
 import './ChallengeDetail.css';
 
 export function ChallengeDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const challenge = slug ? getChallengeBySlug(slug) : undefined;
+  const { t, locale } = useTranslation();
+  const challenge = slug ? getChallengeBySlug(slug, locale) : undefined;
 
   if (!challenge) {
     return (
       <div className="challenge-detail">
         <Link to="/challenges" className="challenge-detail__back">
-          ← Back to Challenges
+          {t.common.backTo(t.nav.challenges)}
         </Link>
-        <p>Challenge not found.</p>
+        <p>{t.challenges.notFound}</p>
       </div>
     );
   }
@@ -25,7 +27,7 @@ export function ChallengeDetail() {
   return (
     <div className="challenge-detail">
       <Link to="/challenges" className="challenge-detail__back">
-        ← Back to Challenges
+        {t.common.backTo(t.nav.challenges)}
       </Link>
 
       {challenge.image && (
@@ -58,17 +60,17 @@ export function ChallengeDetail() {
               <div className="challenge-detail__progress-fill" style={{ width: `${progress}%` }} />
             </div>
             <span className="challenge-detail__progress-label mono">
-              {entryCount}/{challenge.targetDays} days
+              {t.challenges.daysProgress(entryCount, challenge.targetDays!)}
             </span>
           </>
         ) : (
-          <span className="challenge-detail__progress-label mono">{entryCount} entries</span>
+          <span className="challenge-detail__progress-label mono">{t.challenges.entriesCount(entryCount)}</span>
         )}
       </div>
 
-      <h2 className="challenge-detail__entries-heading">Daily Log</h2>
+      <h2 className="challenge-detail__entries-heading">{t.challenges.dailyLog}</h2>
       {entryCount === 0 ? (
-        <p className="challenge-detail__empty">No entries yet.</p>
+        <p className="challenge-detail__empty">{t.challenges.noEntries}</p>
       ) : (
         <div className="challenge-detail__entries">
           {challenge.entries.map((entry) => (

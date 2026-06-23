@@ -13,6 +13,7 @@ import { Travel } from './pages/Travel';
 import { TravelDetail } from './pages/TravelDetail';
 import { NotFound } from './pages/NotFound';
 import { useActiveSection } from './hooks/useActiveSection';
+import { LocaleProvider } from './hooks/useLocale';
 import './App.css';
 
 const SECTION_IDS = ['hero', 'about', 'experience', 'skills', 'open-source'];
@@ -34,26 +35,28 @@ function App() {
   }, [location.pathname, location.hash, location.state]);
 
   return (
-    <div className="app">
-      <Header activeSection={activeSection} />
-      <main className="app-main">
-        <div key={location.pathname} className="page-transition">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/notable-contributions" element={<NotableContributions />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/challenges" element={<Challenges />} />
-            <Route path="/challenges/:slug" element={<ChallengeDetail />} />
-            <Route path="/challenges/:slug/:date" element={<ChallengeEntry />} />
-            <Route path="/travel" element={<Travel />} />
-            <Route path="/travel/:slug" element={<TravelDetail />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <LocaleProvider>
+      <div className="app">
+        <Header activeSection={activeSection} />
+        <main className="app-main">
+          <div key={location.pathname} className="page-transition">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/notable-contributions" element={<NotableContributions />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/challenges" element={<Challenges />} />
+              <Route path="/challenges/:slug" element={<ChallengeDetail />} />
+              <Route path="/challenges/:slug/:date" element={<ChallengeEntry />} />
+              <Route path="/travel" element={<Travel />} />
+              <Route path="/travel/:slug" element={<TravelDetail />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </LocaleProvider>
   );
 }
 

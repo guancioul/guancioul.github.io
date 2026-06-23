@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { name, socialLinks, type SocialIconKey } from '../data/profile';
+import { socialLinks, type SocialIconKey } from '../data/profile';
 import { trackSiteView } from '../lib/viewCounter';
+import { useTranslation } from '../hooks/useTranslation';
 import { CodeIcon, GithubIcon, LinkedinIcon, MailIcon } from './SocialIcons';
 import './Footer.css';
 
@@ -13,6 +14,7 @@ const icons: Record<SocialIconKey, typeof GithubIcon> = {
 
 export function Footer() {
   const [viewCount, setViewCount] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     trackSiteView()
@@ -23,8 +25,10 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <span className="site-footer__text mono">
-        © {new Date().getFullYear()} {name}
-        {viewCount !== null && <span className="site-footer__views"> · {viewCount.toLocaleString()} views</span>}
+        © {new Date().getFullYear()} {t.common.name}
+        {viewCount !== null && (
+          <span className="site-footer__views"> · {t.footer.views(viewCount.toLocaleString())}</span>
+        )}
       </span>
       <div className="site-footer__links">
         {socialLinks.map((link) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { cacheGet, cacheSet } from '../lib/cache';
+import { mockDevStatContributions } from '../lib/mockData';
 import './DevStat.css';
 
 const CACHE_TTL = 6 * 60 * 60 * 1000;
@@ -15,6 +16,11 @@ export function DevStat({ username }: { username: string }) {
   useEffect(() => {
     const key = `devstat_cache_${username}`;
     if (cacheGet<DevStatData>(key, CACHE_TTL)) return;
+
+    if (import.meta.env.DEV) {
+      Promise.resolve().then(() => setData({ contributions: mockDevStatContributions }));
+      return;
+    }
 
     fetch('https://devstats.cncf.io/api/v1', {
       method: 'POST',
