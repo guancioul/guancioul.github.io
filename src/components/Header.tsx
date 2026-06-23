@@ -16,12 +16,7 @@ export function Header({ activeSection }: { activeSection: string }) {
   const isChallenges = location.pathname.startsWith('/challenges');
   const isTravel = location.pathname.startsWith('/travel');
 
-  const navItems = [
-    { id: 'about', label: t.nav.about },
-    { id: 'experience', label: t.nav.experience },
-    { id: 'skills', label: t.nav.skills },
-    { id: 'open-source', label: t.nav.openSource },
-  ];
+  const navItems = [{ id: 'about', label: t.nav.about }];
 
   const langOptions: { value: typeof locale; label: string }[] = [
     { value: 'en', label: 'EN' },
@@ -117,7 +112,18 @@ export function Header({ activeSection }: { activeSection: string }) {
           aria-label={theme === 'dark' ? t.nav.switchToLight : t.nav.switchToDark}
           onClick={toggleTheme}
         >
-          {theme === 'dark' ? <SunIcon className="site-header__theme-icon" /> : <MoonIcon className="site-header__theme-icon" />}
+          <span className="site-header__theme-icon-track">
+            <SunIcon
+              className={`site-header__theme-icon site-header__theme-icon--sun${
+                theme === 'dark' ? ' site-header__theme-icon--hidden' : ' site-header__theme-icon--visible'
+              }`}
+            />
+            <MoonIcon
+              className={`site-header__theme-icon site-header__theme-icon--moon${
+                theme === 'dark' ? ' site-header__theme-icon--visible' : ' site-header__theme-icon--hidden'
+              }`}
+            />
+          </span>
         </button>
       </nav>
     </header>
