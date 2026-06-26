@@ -25,6 +25,14 @@ export interface Translations {
   footer: {
     views: (count: string) => string;
   };
+  blog: {
+    heading: string;
+    empty: string;
+    notFound: string;
+    prev: string;
+    next: string;
+    pageOf: (page: number, totalPages: number) => string;
+  };
   challenges: {
     empty: string;
     daysProgress: (entryCount: number, targetDays: number) => string;

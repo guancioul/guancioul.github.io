@@ -3,11 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getPostBySlug } from '../lib/posts';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
+import { useTranslation } from '../hooks/useTranslation';
 import './BlogPost.css';
 
 export function BlogPost() {
+  const { t, locale } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
-  const post = slug ? getPostBySlug(slug) : undefined;
+  const post = slug ? getPostBySlug(slug, locale) : undefined;
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useMarkdownEmbeds(bodyRef, post?.content);
@@ -16,9 +18,9 @@ export function BlogPost() {
     return (
       <div className="blog-post">
         <Link to="/blog" className="blog-post__back">
-          ← Back to Blog
+          {t.common.backTo(t.nav.blog)}
         </Link>
-        <p>Post not found.</p>
+        <p>{t.blog.notFound}</p>
       </div>
     );
   }
@@ -26,7 +28,7 @@ export function BlogPost() {
   return (
     <div className="blog-post">
       <Link to="/blog" className="blog-post__back">
-        ← Back to Blog
+        {t.common.backTo(t.nav.blog)}
       </Link>
       <h1 className="blog-post__title">{post.title}</h1>
       <div className="blog-post__meta">

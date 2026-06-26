@@ -27,6 +27,14 @@ export const en = {
   footer: {
     views: (count) => `${count} views`,
   },
+  blog: {
+    heading: 'Blog',
+    empty: 'No posts yet.',
+    notFound: 'Post not found.',
+    prev: 'Prev',
+    next: 'Next',
+    pageOf: (page, totalPages) => `Page ${page} of ${totalPages}`,
+  },
   challenges: {
     empty: 'No challenges yet.',
     daysProgress: (entryCount, targetDays) => `${entryCount}/${targetDays} days`,

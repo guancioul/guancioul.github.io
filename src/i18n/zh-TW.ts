@@ -27,6 +27,14 @@ export const zhTW = {
   footer: {
     views: (count) => `${count} 次瀏覽`,
   },
+  blog: {
+    heading: '部落格',
+    empty: '目前還沒有文章。',
+    notFound: '找不到這篇文章。',
+    prev: '上一頁',
+    next: '下一頁',
+    pageOf: (page, totalPages) => `第 ${page} 頁，共 ${totalPages} 頁`,
+  },
   challenges: {
     empty: '目前還沒有挑戰。',
     daysProgress: (entryCount, targetDays) => `${entryCount}/${targetDays} 天`,
