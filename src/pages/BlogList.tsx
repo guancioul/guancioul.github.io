@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../lib/posts';
+import { useTranslation } from '../hooks/useTranslation';
 import './BlogList.css';
 
 const PER_PAGE = 5;
 
 export function BlogList() {
-  const posts = getAllPosts();
+  const { t, locale } = useTranslation();
+  const posts = getAllPosts(locale);
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(posts.length / PER_PAGE);
@@ -15,10 +17,10 @@ export function BlogList() {
 
   return (
     <div className="blog-list">
-      <h1>Blog</h1>
+      <h1>{t.blog.heading}</h1>
 
       {posts.length === 0 ? (
-        <p className="blog-list__empty">No posts yet.</p>
+        <p className="blog-list__empty">{t.blog.empty}</p>
       ) : (
         <div className="blog-list__items">
           {pageItems.map((post) => (
@@ -52,10 +54,10 @@ export function BlogList() {
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
           >
-            &#8592; Prev
+            &#8592; {t.blog.prev}
           </button>
           <span className="blog-list__page-info mono">
-            Page {page} of {totalPages}
+            {t.blog.pageOf(page, totalPages)}
           </span>
           <button
             type="button"
@@ -63,7 +65,7 @@ export function BlogList() {
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
-            Next &#8594;
+            {t.blog.next} &#8594;
           </button>
         </div>
       )}
