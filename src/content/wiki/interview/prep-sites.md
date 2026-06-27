@@ -10,7 +10,7 @@ My personal shortlist, grouped by interview type. Short notes on what each is go
 
 ## Tech interview
 
-- [NTHU OCW — Operating Systems](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141&) — Prof. Jerry Chou’s open course (Mandarin); covers processes, memory, synchronization, file systems, and more
+- [NTHU OCW — Operating Systems](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141) — Prof. Jerry Chou’s open course (Mandarin); covers processes, memory, synchronization, file systems, and more
 - [KodeKloud](https://kodekloud.com/) — hands-on labs for Linux, Kubernetes, Docker, Terraform, and related infra topics; **worth the investment** — learn by doing, not just watching
 
 ## Coding interview
