@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { marked, Renderer, type Tokens } from 'marked';
 
 export interface MarkdownHeading {
   id: string;
@@ -62,12 +62,45 @@ export function extractHeadings(markdown: string): MarkdownHeading[] {
   return headings;
 }
 
+const SITE_HOSTS = new Set(['guancioul.github.io', 'localhost', '127.0.0.1']);
+
+export function isExternalHref(href: string): boolean {
+  if (!href || href.startsWith('#') || href.startsWith('/') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+    return false;
+  }
+
+  try {
+    const { protocol, hostname } = new URL(href);
+    if (protocol !== 'http:' && protocol !== 'https:') return false;
+    return !SITE_HOSTS.has(hostname);
+  } catch {
+    return false;
+  }
+}
+
+function configureExternalLinks(renderer: Renderer): void {
+  renderer.link = function ({ href, title, tokens }: Tokens.Link) {
+    const text = this.parser.parseInline(tokens);
+    const titleAttr = title ? ` title="${title}"` : '';
+    if (isExternalHref(href)) {
+      return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+    }
+    return `<a href="${href}"${titleAttr}>${text}</a>`;
+  };
+}
+
+function createMarkdownRenderer(): Renderer {
+  const renderer = new Renderer();
+  configureExternalLinks(renderer);
+  return renderer;
+}
+
 export function renderWikiMarkdown(markdown: string): { html: string; headings: MarkdownHeading[] } {
   const headings = extractHeadings(markdown);
   let headingIndex = 0;
 
-  const renderer = new marked.Renderer();
-  renderer.heading = function ({ tokens, depth }) {
+  const renderer = createMarkdownRenderer();
+  renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
     const text = this.parser.parseInline(tokens);
     if (depth === 2 || depth === 3) {
       const id = headings[headingIndex]?.id ?? slugifyHeading(text);
@@ -82,5 +115,5 @@ export function renderWikiMarkdown(markdown: string): { html: string; headings: 
 }
 
 export function renderMarkdown(markdown: string): string {
-  return marked.parse(markdown) as string;
+  return marked.parse(markdown, { renderer: createMarkdownRenderer() }) as string;
 }
