@@ -11,6 +11,7 @@ export const en = {
     skills: 'Skills',
     openSource: 'Open Source',
     blog: 'Blog',
+    wiki: 'Wiki',
     challenges: 'Challenges',
     travel: 'Travel',
     toggleMenu: 'Toggle navigation menu',
@@ -34,6 +35,20 @@ export const en = {
     prev: 'Prev',
     next: 'Next',
     pageOf: (page, totalPages) => `Page ${page} of ${totalPages}`,
+  },
+  wiki: {
+    heading: 'Wiki',
+    intro:
+      'Curated handbooks distilled from blog posts and challenges — living reference pages, not a publish-once timeline.',
+    empty: 'No wiki pages yet.',
+    notFound: 'Page not found.',
+    contents: 'Contents',
+    prev: 'Previous',
+    next: 'Next',
+    updatedAt: (date) => `Last updated ${date}`,
+    onThisPage: 'On this page',
+    relatedPosts: 'Related posts',
+    relatedChallenges: 'Related challenges',
   },
   challenges: {
     empty: 'No challenges yet.',
