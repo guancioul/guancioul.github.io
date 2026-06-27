@@ -88,7 +88,7 @@ function sectionIdFromSectionMetaPath(path: string): string {
 }
 
 function slugFromPagePath(path: string): string {
-  return basename(path).replace(/\.md$/, '');
+  return basename(path).replace(/\.zh-TW\.md$/, '').replace(/\.md$/, '');
 }
 
 function parseList(value: string | undefined): string[] {
