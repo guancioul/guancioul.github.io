@@ -10,7 +10,7 @@ order: 1
 
 ## 技術面試
 
-- [NTHU OCW — Operating Systems](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141&) — 清大周志遠教授作業系統開放課程；涵蓋行程、記憶體、同步、檔案系統等
+- [NTHU OCW — Operating Systems](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141) — 清大周志遠教授作業系統開放課程；涵蓋行程、記憶體、同步、檔案系統等
 - [KodeKloud](https://kodekloud.com/) — Linux、Kubernetes、Docker、Terraform 等基礎設施的實作 lab；**值得投資** — 動手做，不是只看影片
 
 ## 刷題面試
