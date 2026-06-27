@@ -9,6 +9,7 @@ export interface Translations {
     skills: string;
     openSource: string;
     blog: string;
+    wiki: string;
     challenges: string;
     travel: string;
     toggleMenu: string;
@@ -32,6 +33,19 @@ export interface Translations {
     prev: string;
     next: string;
     pageOf: (page: number, totalPages: number) => string;
+  };
+  wiki: {
+    heading: string;
+    intro: string;
+    empty: string;
+    notFound: string;
+    contents: string;
+    prev: string;
+    next: string;
+    updatedAt: (date: string) => string;
+    onThisPage: string;
+    relatedPosts: string;
+    relatedChallenges: string;
   };
   challenges: {
     empty: string;

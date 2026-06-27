@@ -13,6 +13,7 @@ export function Header({ activeSection }: { activeSection: string }) {
   const { locale, setLocale, t } = useTranslation();
   const isHome = location.pathname === '/';
   const isBlog = location.pathname.startsWith('/blog');
+  const isWiki = location.pathname.startsWith('/wiki');
   const isChallenges = location.pathname.startsWith('/challenges');
   const isTravel = location.pathname.startsWith('/travel');
 
@@ -74,6 +75,13 @@ export function Header({ activeSection }: { activeSection: string }) {
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.blog}
+        </Link>
+        <Link
+          to="/wiki"
+          className={`site-header__link${isWiki ? ' site-header__link--active' : ''}`}
+          onClick={() => setMenuOpen(false)}
+        >
+          {t.nav.wiki}
         </Link>
         <Link
           to="/challenges"
