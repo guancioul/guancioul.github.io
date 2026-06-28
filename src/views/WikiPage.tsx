@@ -1,10 +1,8 @@
 import { useMemo, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { renderWikiMarkdown } from '../lib/markdown';
 import { getAdjacentWikiPages, getWikiPageBySlug } from '../lib/wiki';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './WikiPage.css';
 
@@ -12,14 +10,11 @@ function scrollToHeading(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export function WikiPage() {
+export function WikiPage({ slug }: { slug: string }) {
   const { t, locale } = useTranslation();
   const { closeDrawer } = useWikiDrawer();
-  const { slug } = useParams<{ slug: string }>();
-  const page = slug ? getWikiPageBySlug(slug, locale) : undefined;
-  const adjacent = slug ? getAdjacentWikiPages(slug, locale) : { prev: null, next: null };
-
-  useDocumentTitle(page?.title ?? (slug ? t.wiki.notFound : t.wiki.heading), t.common.name);
+  const page = getWikiPageBySlug(slug, locale);
+  const adjacent = getAdjacentWikiPages(slug, locale);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const rendered = useMemo(
@@ -32,9 +27,9 @@ export function WikiPage() {
   if (!page) {
     return (
       <div className="wiki-article">
-        <Link to="/wiki" className="wiki-article__back">
+        <a href="/wiki" className="wiki-article__back">
           {t.common.backTo(t.nav.wiki)}
-        </Link>
+        </a>
         <p>{t.wiki.notFound}</p>
       </div>
     );
@@ -58,26 +53,26 @@ export function WikiPage() {
         {(adjacent.prev || adjacent.next) && (
           <nav className="wiki-article__pager" aria-label="Wiki page navigation">
             {adjacent.prev ? (
-              <Link
-                to={`/wiki/${adjacent.prev.slug}`}
+              <a
+                href={`/wiki/${adjacent.prev.slug}`}
                 className="wiki-article__pager-link wiki-article__pager-link--prev"
                 onClick={closeDrawer}
               >
                 <span className="wiki-article__pager-label mono">{t.wiki.prev}</span>
                 <span className="wiki-article__pager-title">{adjacent.prev.title}</span>
-              </Link>
+              </a>
             ) : (
               <span />
             )}
             {adjacent.next ? (
-              <Link
-                to={`/wiki/${adjacent.next.slug}`}
+              <a
+                href={`/wiki/${adjacent.next.slug}`}
                 className="wiki-article__pager-link wiki-article__pager-link--next"
                 onClick={closeDrawer}
               >
                 <span className="wiki-article__pager-label mono">{t.wiki.next}</span>
                 <span className="wiki-article__pager-title">{adjacent.next.title}</span>
-              </Link>
+              </a>
             ) : (
               <span />
             )}

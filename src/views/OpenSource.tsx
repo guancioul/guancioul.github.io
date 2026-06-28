@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { DevStat } from '../components/DevStat';
 import { githubUsername } from '../data/profile';
 import { GithubContributions } from '../components/GithubContributions';
@@ -15,9 +14,9 @@ export function OpenSource() {
 
       <div className="page__body">
         <p>My open source pull request contributions across various projects.</p>
-        <Link to="/notable-contributions" className="open-source__notable-link">
+        <a href="/notable-contributions" className="open-source__notable-link">
           Notable Contributions →
-        </Link>
+        </a>
         <GithubContributions username={githubUsername} />
 
         <div className="skill-panel open-source__cncf-panel">

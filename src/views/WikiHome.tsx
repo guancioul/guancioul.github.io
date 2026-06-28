@@ -1,7 +1,5 @@
-import { Link } from 'react-router-dom';
 import { getWikiHandbookMeta, getWikiSections } from '../lib/wiki';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './WikiHome.css';
 
@@ -10,8 +8,6 @@ export function WikiHome() {
   const { closeDrawer } = useWikiDrawer();
   const meta = getWikiHandbookMeta(locale);
   const sections = getWikiSections(locale);
-
-  useDocumentTitle(meta.title || t.wiki.heading, t.common.name);
 
   return (
     <div className="wiki-home">
@@ -28,9 +24,9 @@ export function WikiHome() {
               <ul className="wiki-home__pages">
                 {section.pages.map((page) => (
                   <li className="wiki-home__page" key={page.slug}>
-                    <Link to={`/wiki/${page.slug}`} className="wiki-home__page-link" onClick={closeDrawer}>
+                    <a href={`/wiki/${page.slug}`} className="wiki-home__page-link" onClick={closeDrawer}>
                       {page.title}
-                    </Link>
+                    </a>
                     {page.summary && <p className="wiki-home__page-summary">{page.summary}</p>}
                   </li>
                 ))}

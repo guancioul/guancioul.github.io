@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { experience } from '../data/experience';
 import { SectionHeading } from '../components/SectionHeading';
 import './Experience.css';
@@ -30,9 +29,9 @@ export function Experience() {
                     {entry.teams.map((team) => (
                       <li key={team.name}>
                         {team.linkTo ? (
-                          <Link to={team.linkTo} className="timeline-item__team-name mono">
+                          <a href={team.linkTo} className="timeline-item__team-name mono">
                             {team.name}
-                          </Link>
+                          </a>
                         ) : (
                           <span className="timeline-item__team-name mono">{team.name}</span>
                         )}

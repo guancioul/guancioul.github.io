@@ -1,21 +1,24 @@
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useTranslation } from '../hooks/useTranslation';
 import { MoonIcon, SunIcon } from './ThemeIcons';
 import './Header.css';
 
-export function Header({ activeSection }: { activeSection: string }) {
-  const location = useLocation();
-  const navigate = useNavigate();
+export function Header({
+  activeSection,
+  currentPath,
+}: {
+  activeSection: string;
+  currentPath: string;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { locale, setLocale, t } = useTranslation();
-  const isHome = location.pathname === '/';
-  const isBlog = location.pathname.startsWith('/blog');
-  const isWiki = location.pathname.startsWith('/wiki');
-  const isChallenges = location.pathname.startsWith('/challenges');
-  const isTravel = location.pathname.startsWith('/travel');
+  const isHome = currentPath === '/';
+  const isBlog = currentPath.startsWith('/blog');
+  const isWiki = currentPath.startsWith('/wiki');
+  const isChallenges = currentPath.startsWith('/challenges');
+  const isTravel = currentPath.startsWith('/travel');
 
   const navItems = [{ id: 'about', label: t.nav.about }];
 
@@ -29,7 +32,7 @@ export function Header({ activeSection }: { activeSection: string }) {
     if (isHome) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      navigate('/', { state: { scrollTo: id } });
+      window.location.assign(`/?scrollTo=${id}`);
     }
   }
 
@@ -38,7 +41,7 @@ export function Header({ activeSection }: { activeSection: string }) {
     if (isHome) {
       document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      navigate('/');
+      window.location.assign('/');
     }
   }
 
@@ -69,34 +72,34 @@ export function Header({ activeSection }: { activeSection: string }) {
             {item.label}
           </button>
         ))}
-        <Link
-          to="/blog"
+        <a
+          href="/blog"
           className={`site-header__link${isBlog ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.blog}
-        </Link>
-        <Link
-          to="/wiki"
+        </a>
+        <a
+          href="/wiki"
           className={`site-header__link${isWiki ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.wiki}
-        </Link>
-        <Link
-          to="/challenges"
+        </a>
+        <a
+          href="/challenges"
           className={`site-header__link${isChallenges ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.challenges}
-        </Link>
-        <Link
-          to="/travel"
+        </a>
+        <a
+          href="/travel"
           className={`site-header__link${isTravel ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.travel}
-        </Link>
+        </a>
         <div className="site-header__lang-switch" role="group" aria-label={t.nav.switchLanguage}>
           <span
             className="site-header__lang-switch__indicator"

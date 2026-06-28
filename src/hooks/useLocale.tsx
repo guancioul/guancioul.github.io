@@ -10,6 +10,7 @@ function isLocale(value: string | null): value is Locale {
 }
 
 function getInitialLocale(): Locale {
+  if (typeof window === 'undefined') return defaultLocale;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (isLocale(stored)) return stored;

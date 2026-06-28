@@ -1,12 +1,9 @@
-import { Link } from 'react-router-dom';
 import { getAllChallenges } from '../lib/challenges';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './Challenges.css';
 
 export function Challenges() {
   const { t, locale } = useTranslation();
-  useDocumentTitle(t.nav.challenges, t.common.name);
   const challenges = getAllChallenges(locale);
 
   return (
@@ -24,7 +21,7 @@ export function Challenges() {
               : null;
 
             return (
-              <Link to={`/challenges/${challenge.slug}`} className="challenge-card" key={challenge.slug}>
+              <a href={`/challenges/${challenge.slug}`} className="challenge-card" key={challenge.slug}>
                 {challenge.image && (
                   <div className="challenge-card__image" style={{ backgroundImage: `url(${challenge.image})` }} />
                 )}
@@ -59,7 +56,7 @@ export function Challenges() {
                     )}
                   </div>
                 </div>
-              </Link>
+              </a>
             );
           })}
         </div>

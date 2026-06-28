@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ChallengeDetailIsland } from '../../islands/AppIslands';
+import { getChallengeMeta, getChallengeStaticPaths } from '../../lib/content-meta';
+
+export function getStaticPaths() {
+  return getChallengeStaticPaths();
+}
+
+const { slug } = Astro.params;
+const meta = getChallengeMeta(slug!);
+
+if (!meta) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  url={meta.url}
+  ogImage={meta.ogImage}
+>
+  <ChallengeDetailIsland client:load slug={slug!} />
+</BaseLayout>

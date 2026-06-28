@@ -1,25 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
 import { getChallengeBySlug } from '../lib/challenges';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './ChallengeDetail.css';
 
-export function ChallengeDetail() {
-  const { slug } = useParams<{ slug: string }>();
+export function ChallengeDetail({ slug }: { slug: string }) {
   const { t, locale } = useTranslation();
-  const challenge = slug ? getChallengeBySlug(slug, locale) : undefined;
-
-  useDocumentTitle(
-    challenge?.title ?? (slug ? t.challenges.notFound : t.nav.challenges),
-    t.common.name,
-  );
+  const challenge = getChallengeBySlug(slug, locale);
 
   if (!challenge) {
     return (
       <div className="challenge-detail">
-        <Link to="/challenges" className="challenge-detail__back">
+        <a href="/challenges" className="challenge-detail__back">
           {t.common.backTo(t.nav.challenges)}
-        </Link>
+        </a>
         <p>{t.challenges.notFound}</p>
       </div>
     );
@@ -32,9 +24,9 @@ export function ChallengeDetail() {
 
   return (
     <div className="challenge-detail">
-      <Link to="/challenges" className="challenge-detail__back">
+      <a href="/challenges" className="challenge-detail__back">
         {t.common.backTo(t.nav.challenges)}
-      </Link>
+      </a>
 
       {challenge.image && (
         <div className="challenge-detail__image" style={{ backgroundImage: `url(${challenge.image})` }} />
@@ -81,8 +73,8 @@ export function ChallengeDetail() {
       ) : (
         <div className="challenge-detail__entries">
           {challenge.entries.map((entry) => (
-            <Link
-              to={`/challenges/${challenge.slug}/${entry.date}`}
+            <a
+              href={`/challenges/${challenge.slug}/${entry.date}`}
               className="challenge-entry"
               key={entry.date}
             >
@@ -94,7 +86,7 @@ export function ChallengeDetail() {
                 {entry.preview && <p className="challenge-entry__preview">{entry.preview}</p>}
               </div>
               <span className="challenge-entry__arrow">→</span>
-            </Link>
+            </a>
           ))}
         </div>
       )}
