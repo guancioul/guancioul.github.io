@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import { getAllTrips } from '../lib/travel';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useTranslation } from '../hooks/useTranslation';
 import './Travel.css';
 
 export function Travel() {
+  const { t } = useTranslation();
+  useDocumentTitle(t.nav.travel, t.common.name);
   const trips = getAllTrips();
 
   return (

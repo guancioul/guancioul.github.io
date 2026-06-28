@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { getAllChallenges } from '../lib/challenges';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './Challenges.css';
 
 export function Challenges() {
   const { t, locale } = useTranslation();
+  useDocumentTitle(t.nav.challenges, t.common.name);
   const challenges = getAllChallenges(locale);
 
   return (

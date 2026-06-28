@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../lib/posts';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './BlogList.css';
 
@@ -8,6 +9,7 @@ const PER_PAGE = 5;
 
 export function BlogList() {
   const { t, locale } = useTranslation();
+  useDocumentTitle(t.nav.blog, t.common.name);
   const posts = getAllPosts(locale);
   const [page, setPage] = useState(1);
 

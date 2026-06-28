@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useTranslation } from '../hooks/useTranslation';
 import { highlights } from '../data/highlights';
 import { PRCard } from '../components/PRCard';
 import './NotableContributions.css';
@@ -25,9 +27,14 @@ for (const pr of allPrs) {
   group.prs.push(pr);
 }
 
+const PAGE_TITLE = 'Notable Contributions';
+
 export function NotableContributions() {
+  const { t } = useTranslation();
   const location = useLocation();
   const isInitialMount = useRef(true);
+
+  useDocumentTitle(PAGE_TITLE, t.common.name);
 
   useEffect(() => {
     if (location.hash) {
