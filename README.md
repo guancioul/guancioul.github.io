@@ -14,13 +14,11 @@ A single scrolling page with a fixed scroll-spy dot nav:
 - **About** — intro, social badges, tech stack tags, certification, Notable Contributions (from `src/data/highlights.ts`), and a live CNCF Stats score from `devstats.cncf.io`
 - **Open Source** — a GitHub-style tabbed widget (Pull Requests / Issues) showing live data from the GitHub Search API, with status icons, association badges, relative time, and client-side pagination
 
+Both the GitHub and CNCF widgets cache their responses in `localStorage` (10 min and 6 hr TTL respectively) so repeat visits don't re-hit the APIs.
+
 ### Blog (`/blog`, `/blog/:slug`)
 
 Posts are Markdown files in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`), rendered via `marked`. Astro generates static HTML per route with Open Graph meta tags for social sharing. Legacy `#/` URLs redirect to path-based URLs automatically.
-
-**Blog vs Wiki:** blog posts are raw, time-ordered writing (what happened, when). Wiki pages are distilled handbooks written after a series is done — conclusions, checklists, links back to blog/challenge logs. Not every post becomes a wiki page.
-
-Both the GitHub and CNCF widgets cache their responses in `localStorage` (10 min and 6 hr TTL respectively) so repeat visits don't re-hit the APIs.
 
 ### Wiki (`/wiki`, `/wiki/:slug`)
 
@@ -33,6 +31,22 @@ Images go in `public/assets/wiki/<slug>/` and are referenced as `/assets/wiki/..
 ### Challenges (`/challenges`, `/challenges/:slug`, `/challenges/:slug/:date`)
 
 Personal habit/discipline challenges (e.g. "Project 50", "Dopamine Detox"). Each challenge lives at `src/content/challenges/<slug>/meta.md` (frontmatter: `title`, `image`, `startDate`, `endDate`, `targetDays`, `tags`, `summary`) with daily entries in `src/content/challenges/<slug>/entries/*.md` (frontmatter: `date`, `title`; body is that day's notes, often a `## Checklist` of markdown checkboxes). The list page shows a progress bar (`entries.length / targetDays`); each entry links to its own page. A sibling `template.md` per challenge (outside the glob patterns `lib/challenges.ts` reads, so it's never picked up as real content) is a copy-paste starting point for new days.
+
+### Blog vs Wiki vs Challenges
+
+Three layers, different jobs:
+
+| Layer | Role | References | Typical content |
+| --- | --- | --- | --- |
+| **Challenges** | Daily log while a run is in progress | — | Checklists, what happened today |
+| **Wiki** | Evergreen handbook | **External** — books, videos, articles; organize frameworks and variants like a sourced reference doc | What something is, common approaches, general how-to |
+| **Blog** | Dated personal writing | **Your own wiki** (no need to re-cite external sources) | Reflection, especially retro / Next steps after a run ends |
+
+- **Wiki** is written for a reader who doesn't know which personal run you're on. Claims should link to sources (markdown links are enough — no formal citation format). Use `updatedAt`, not `date`.
+- **Blog** is first-person and time-stamped (`date`). Background belongs on wiki; the post links there instead of repeating it.
+- **Challenges** are the rawest layer — one entry per day during the run.
+
+Typical flow: **Challenge (during) → Blog (after: reflection) → Wiki (reference, updated when the general write-up changes).** A wiki page can exist before, during, or after a challenge; blog retros usually come after. Not every topic needs a wiki page; not every wiki page needs a matching blog post.
 
 ### Travel (`/travel`, `/travel/:slug`)
 
