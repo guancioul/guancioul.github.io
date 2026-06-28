@@ -44,6 +44,17 @@ export function mockGithubItems(type: 'pr' | 'issue'): MockGithubItem[] {
         repository_url: 'https://api.github.com/repos/open-telemetry/opentelemetry-collector',
         user: { login: 'guancioul' },
       },
+      {
+        number: 228,
+        title: '[Mock] Add proposal for cross-namespace credential push in KafkaAccess',
+        html_url: 'https://github.com/strimzi/proposals/pull/228',
+        state: 'closed',
+        created_at: dayAgo(16),
+        author_association: 'CONTRIBUTOR',
+        repository_url: 'https://api.github.com/repos/strimzi/proposals',
+        user: { login: 'guancioul' },
+        pull_request: { merged_at: null },
+      },
     ];
   }
 
