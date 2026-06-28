@@ -14,7 +14,7 @@ For a stretch, cut back on high-stimulation inputs — social media, short video
 The book uses patient stories and neuroscience to explain how chasing high stimulation raises your baseline until low-key activities feel boring. Lembke organizes an eight-step process that spells **DOPAMINE**:
 
 | Letter | Term | What it means |
-|--------|------|---------------|
+| --- | --- | --- |
 | **D** | Data | **Track it** — what you use, how much, how often, and what triggers it |
 | **O** | Objectives | **Why you use it** — fun, boredom, anxiety, social pressure, escape? |
 | **P** | Problems | **The cost** — what harm does it cause? Do you want this life in one or five years? |

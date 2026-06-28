@@ -36,8 +36,8 @@ Personal habit/discipline challenges (e.g. "Project 50", "Dopamine Detox"). Each
 
 Three layers, different jobs:
 
-| | Role | References | Typical content |
-|---|------|------------|-----------------|
+| Layer | Role | References | Typical content |
+| --- | --- | --- | --- |
 | **Challenges** | Daily log while a run is in progress | — | Checklists, what happened today |
 | **Wiki** | Evergreen handbook | **External** — books, videos, articles; organize frameworks and variants like a sourced reference doc | What something is, common approaches, general how-to |
 | **Blog** | Dated personal writing | **Your own wiki** (no need to re-cite external sources) | Reflection, especially retro / Next steps after a run ends |
