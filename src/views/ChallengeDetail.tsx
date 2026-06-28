@@ -1,15 +1,17 @@
 import { getChallengeBySlug } from '../lib/challenges';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './ChallengeDetail.css';
 
 export function ChallengeDetail({ slug }: { slug: string }) {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const challenge = getChallengeBySlug(slug, locale);
 
   if (!challenge) {
     return (
       <div className="challenge-detail">
-        <a href="/challenges" className="challenge-detail__back">
+        <a href={lp('/challenges')} className="challenge-detail__back">
           {t.common.backTo(t.nav.challenges)}
         </a>
         <p>{t.challenges.notFound}</p>
@@ -24,7 +26,7 @@ export function ChallengeDetail({ slug }: { slug: string }) {
 
   return (
     <div className="challenge-detail">
-      <a href="/challenges" className="challenge-detail__back">
+      <a href={lp('/challenges')} className="challenge-detail__back">
         {t.common.backTo(t.nav.challenges)}
       </a>
 
@@ -74,7 +76,7 @@ export function ChallengeDetail({ slug }: { slug: string }) {
         <div className="challenge-detail__entries">
           {challenge.entries.map((entry) => (
             <a
-              href={`/challenges/${challenge.slug}/${entry.date}`}
+              href={lp(`/challenges/${challenge.slug}/${entry.date}`)}
               className="challenge-entry"
               key={entry.date}
             >

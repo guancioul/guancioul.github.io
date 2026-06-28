@@ -1,0 +1,12 @@
+---
+import BlogPostRoute from '../../../route-templates/BlogPostRoute.astro';
+import { getBlogStaticPaths } from '../../../lib/content-meta';
+
+export function getStaticPaths() {
+  return getBlogStaticPaths();
+}
+
+const { slug } = Astro.params;
+---
+
+<BlogPostRoute locale="zh-TW" slug={slug!} />

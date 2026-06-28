@@ -1,0 +1,12 @@
+---
+import TravelDetailRoute from '../../../route-templates/TravelDetailRoute.astro';
+import { getTravelStaticPaths } from '../../../lib/content-meta';
+
+export function getStaticPaths() {
+  return getTravelStaticPaths();
+}
+
+const { slug } = Astro.params;
+---
+
+<TravelDetailRoute locale="zh-TW" slug={slug!} />

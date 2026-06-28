@@ -2,10 +2,13 @@ import { DevStat } from '../components/DevStat';
 import { githubUsername } from '../data/profile';
 import { GithubContributions } from '../components/GithubContributions';
 import { SectionHeading } from '../components/SectionHeading';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './Skills.css';
 import './OpenSource.css';
 
 export function OpenSource() {
+  const lp = useLocalizedPath();
+
   return (
     <section id="open-source" className="page">
       <div className="page__heading">
@@ -14,7 +17,7 @@ export function OpenSource() {
 
       <div className="page__body">
         <p>My open source pull request contributions across various projects.</p>
-        <a href="/notable-contributions" className="open-source__notable-link">
+        <a href={lp('/notable-contributions')} className="open-source__notable-link">
           Notable Contributions →
         </a>
         <GithubContributions username={githubUsername} />

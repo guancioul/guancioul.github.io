@@ -1,10 +1,12 @@
 import personalPhoto from '../assets/avatar.png';
 import { email, githubUrl, role } from '../data/profile';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './Hero.css';
 
 export function Hero() {
   const { t } = useTranslation();
+  const lp = useLocalizedPath();
 
   return (
     <section id="hero" className="hero">
@@ -19,7 +21,7 @@ export function Hero() {
             <a className="hero__button hero__button--primary" href={githubUrl} target="_blank" rel="noopener">
               {t.hero.githubButton}
             </a>
-            <a className="hero__button" href="/blog">
+            <a className="hero__button" href={lp('/blog')}>
               {t.hero.blogButton}
             </a>
           </div>

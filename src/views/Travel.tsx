@@ -1,9 +1,11 @@
 import { getAllTrips } from '../lib/travel';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './Travel.css';
 
 export function Travel() {
   const { t } = useTranslation();
+  const lp = useLocalizedPath();
   const trips = getAllTrips();
 
   return (
@@ -15,7 +17,7 @@ export function Travel() {
       ) : (
         <div className="travel__grid">
           {trips.map((trip) => (
-            <a href={`/travel/${trip.slug}`} className="trip-card" key={trip.slug}>
+            <a href={lp(`/travel/${trip.slug}`)} className="trip-card" key={trip.slug}>
               {trip.cover && (
                 <div className="trip-card__image" style={{ backgroundImage: `url(${trip.cover})` }} />
               )}

@@ -1,0 +1,12 @@
+---
+import ChallengeDetailRoute from '../../../route-templates/ChallengeDetailRoute.astro';
+import { getChallengeStaticPaths } from '../../../lib/content-meta';
+
+export function getStaticPaths() {
+  return getChallengeStaticPaths();
+}
+
+const { slug } = Astro.params;
+---
+
+<ChallengeDetailRoute locale="zh-TW" slug={slug!} />

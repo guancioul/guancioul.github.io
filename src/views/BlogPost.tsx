@@ -3,10 +3,12 @@ import { renderMarkdown } from '../lib/markdown';
 import { getPostBySlug } from '../lib/posts';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './BlogPost.css';
 
 export function BlogPost({ slug }: { slug: string }) {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const post = getPostBySlug(slug, locale);
   const bodyRef = useRef<HTMLDivElement>(null);
 
@@ -15,7 +17,7 @@ export function BlogPost({ slug }: { slug: string }) {
   if (!post) {
     return (
       <div className="blog-post">
-        <a href="/blog" className="blog-post__back">
+        <a href={lp('/blog')} className="blog-post__back">
           {t.common.backTo(t.nav.blog)}
         </a>
         <p>{t.blog.notFound}</p>
@@ -25,7 +27,7 @@ export function BlogPost({ slug }: { slug: string }) {
 
   return (
     <div className="blog-post">
-      <a href="/blog" className="blog-post__back">
+      <a href={lp('/blog')} className="blog-post__back">
         {t.common.backTo(t.nav.blog)}
       </a>
       <h1 className="blog-post__title">{post.title}</h1>

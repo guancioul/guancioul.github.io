@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BlogPostIsland } from '../islands/AppIslands';
+import { getBlogMeta } from '../lib/content-meta';
+import { notFoundPath } from '../lib/locale-path';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const meta = getBlogMeta(slug, locale);
+
+if (!meta) {
+  return Astro.redirect(notFoundPath(locale));
+}
+---
+
+<BaseLayout
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  url={meta.url}
+  ogType={meta.ogType}
+>
+  <BlogPostIsland client:load slug={slug} locale={locale} />
+</BaseLayout>

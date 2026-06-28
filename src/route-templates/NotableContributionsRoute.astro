@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { NotableContributionsIsland } from '../islands/AppIslands';
+import { getNotableContributionsMeta } from '../lib/content-meta';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getNotableContributionsMeta(locale);
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} url={meta.url}>
+  <NotableContributionsIsland client:load locale={locale} />
+</BaseLayout>

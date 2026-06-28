@@ -2,9 +2,13 @@ import { useRef } from 'react';
 import { renderMarkdown } from '../lib/markdown';
 import { getTripBySlug } from '../lib/travel';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
+import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './TravelDetail.css';
 
 export function TravelDetail({ slug }: { slug: string }) {
+  const { t } = useTranslation();
+  const lp = useLocalizedPath();
   const trip = getTripBySlug(slug);
   const bodyRef = useRef<HTMLDivElement>(null);
 
@@ -13,8 +17,8 @@ export function TravelDetail({ slug }: { slug: string }) {
   if (!trip) {
     return (
       <div className="travel-detail">
-        <a href="/travel" className="travel-detail__back">
-          ← Back to Travel
+        <a href={lp('/travel')} className="travel-detail__back">
+          {t.common.backTo(t.nav.travel)}
         </a>
         <p>Trip not found.</p>
       </div>
@@ -23,8 +27,8 @@ export function TravelDetail({ slug }: { slug: string }) {
 
   return (
     <div className="travel-detail">
-      <a href="/travel" className="travel-detail__back">
-        ← Back to Travel
+      <a href={lp('/travel')} className="travel-detail__back">
+        {t.common.backTo(t.nav.travel)}
       </a>
 
       {trip.cover && (

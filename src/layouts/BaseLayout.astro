@@ -1,9 +1,12 @@
 ---
 import '../index.css';
 import '../App.css';
+import { ClientRouter } from 'astro:transitions';
 import { formatPageTitle, absoluteUrl, DEFAULT_OG_IMAGE } from '../lib/site';
+import type { Locale } from '../i18n';
 
 interface Props {
+  locale?: Locale;
   title?: string;
   description?: string;
   url?: string;
@@ -12,6 +15,7 @@ interface Props {
 }
 
 const {
+  locale = 'en',
   title,
   description = '',
   url = Astro.url.pathname,
@@ -22,14 +26,16 @@ const {
 const pageTitle = formatPageTitle(title);
 const canonicalUrl = absoluteUrl(url);
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
+const htmlLang = locale === 'zh-TW' ? 'zh-TW' : 'en';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={htmlLang} transition:animate="fade">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ClientRouter />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <meta property="og:title" content={pageTitle} />
@@ -43,20 +49,63 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
     <meta name="twitter:image" content={ogImageUrl} />
     <script is:inline>
       (function () {
+        function applyTheme(doc) {
+          try {
+            var stored = localStorage.getItem('theme');
+            var theme =
+              stored === 'light' || stored === 'dark'
+                ? stored
+                : window.matchMedia('(prefers-color-scheme: dark)').matches
+                  ? 'dark'
+                  : 'light';
+            doc.documentElement.setAttribute('data-theme', theme);
+          } catch (e) {}
+        }
+
         if (location.hash.startsWith('#/')) {
           location.replace(location.hash.slice(1));
           return;
         }
-        try {
-          var stored = localStorage.getItem('theme');
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {}
+
+        applyTheme(document);
+
+        document.addEventListener('astro:before-swap', function (event) {
+          applyTheme(event.newDocument);
+        });
+
+        function restoreLocaleSwitchScroll() {
+          try {
+            var scroll = sessionStorage.getItem('locale-switch-scroll');
+            if (scroll === null) return false;
+            var y = parseInt(scroll, 10);
+            if (!Number.isFinite(y)) return false;
+            window.scrollTo(0, y);
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function finishLocaleSwitchScrollRestore() {
+          try {
+            sessionStorage.removeItem('locale-switch-scroll');
+          } catch (e) {}
+        }
+
+        function scheduleLocaleSwitchScrollRestore() {
+          if (!restoreLocaleSwitchScroll()) return;
+          requestAnimationFrame(function () {
+            restoreLocaleSwitchScroll();
+            requestAnimationFrame(function () {
+              restoreLocaleSwitchScroll();
+              finishLocaleSwitchScrollRestore();
+            });
+          });
+        }
+
+        document.addEventListener('astro:page-load', scheduleLocaleSwitchScrollRestore);
+        document.addEventListener('astro:after-swap', restoreLocaleSwitchScroll);
+        scheduleLocaleSwitchScrollRestore();
       })();
     </script>
   </head>
@@ -64,3 +113,22 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
     <slot />
   </body>
 </html>
+
+<style is:global>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+</style>

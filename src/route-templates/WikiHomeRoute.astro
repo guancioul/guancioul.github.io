@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { WikiHomeIsland } from '../islands/AppIslands';
+import { getWikiHomeMeta } from '../lib/content-meta';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getWikiHomeMeta(locale);
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description} url={meta.url}>
+  <WikiHomeIsland client:load locale={locale} />
+</BaseLayout>

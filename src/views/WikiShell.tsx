@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getWikiPageBySlug, getWikiSections } from '../lib/wiki';
 import { WikiDrawerContext } from '../hooks/wikiDrawerContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './WikiLayout.css';
 
 function WikiSidebarNav({
@@ -13,12 +14,13 @@ function WikiSidebarNav({
   activeSlug?: string;
 }) {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const sections = getWikiSections(locale);
 
   return (
     <nav className="wiki-sidebar__nav" aria-label="Wiki handbook">
       <a
-        href="/wiki"
+        href={lp('/wiki')}
         className={`wiki-sidebar__home${activeSlug ? '' : ' wiki-sidebar__home--active'}`}
         onClick={onNavigate}
       >
@@ -31,7 +33,7 @@ function WikiSidebarNav({
             {section.pages.map((page) => (
               <li key={page.slug}>
                 <a
-                  href={`/wiki/${page.slug}`}
+                  href={lp(`/wiki/${page.slug}`)}
                   className={`wiki-sidebar__link${activeSlug === page.slug ? ' wiki-sidebar__link--active' : ''}`}
                   aria-current={activeSlug === page.slug ? 'page' : undefined}
                   onClick={onNavigate}

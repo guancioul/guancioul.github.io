@@ -1,12 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { NotableContributionsIsland } from '../islands/AppIslands';
+import NotableContributionsRoute from '../route-templates/NotableContributionsRoute.astro';
 ---
 
-<BaseLayout
-  title="Notable Contributions"
-  description="Selected open source pull requests across CNCF projects."
-  url="/notable-contributions"
->
-  <NotableContributionsIsland client:load />
-</BaseLayout>
+<NotableContributionsRoute locale="en" />
