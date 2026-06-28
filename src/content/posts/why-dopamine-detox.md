@@ -11,7 +11,7 @@ It all started with a video by Niklas Christl — [DOPAMINE DETOX | How To Take 
 
 He did a 7-day dopamine detox himself, with rules: no social media, no digital entertainment, no junk food, no alcohol, no porn, no music. It made a lot of sense to me, so I decided to follow his rules and try it out myself.
 
-Honestly, I'd tried a few times before and never made it through. This time I'm treating it as a proper challenge and tracking it on my [personal site](https://guancioul.github.io/#/challenges/dopamine-detox).
+Honestly, I'd tried a few times before and never made it through. This time I'm treating it as a proper challenge and tracking it on my [personal site](https://guancioul.github.io/challenges/dopamine-detox).
 
 ## Why I Wanted to Do This
 

@@ -1,27 +1,21 @@
 import { useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getTripBySlug } from '../lib/travel';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
-import { useTranslation } from '../hooks/useTranslation';
 import './TravelDetail.css';
 
-export function TravelDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const trip = slug ? getTripBySlug(slug) : undefined;
+export function TravelDetail({ slug }: { slug: string }) {
+  const trip = getTripBySlug(slug);
   const bodyRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
 
-  useDocumentTitle(trip?.title ?? (slug ? 'Trip not found' : t.nav.travel), t.common.name);
   useMarkdownEmbeds(bodyRef, trip?.content);
 
   if (!trip) {
     return (
       <div className="travel-detail">
-        <Link to="/travel" className="travel-detail__back">
+        <a href="/travel" className="travel-detail__back">
           ← Back to Travel
-        </Link>
+        </a>
         <p>Trip not found.</p>
       </div>
     );
@@ -29,9 +23,9 @@ export function TravelDetail() {
 
   return (
     <div className="travel-detail">
-      <Link to="/travel" className="travel-detail__back">
+      <a href="/travel" className="travel-detail__back">
         ← Back to Travel
-      </Link>
+      </a>
 
       {trip.cover && (
         <div className="travel-detail__cover" style={{ backgroundImage: `url(${trip.cover})` }} />

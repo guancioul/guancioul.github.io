@@ -21,29 +21,35 @@ import prometheus from '../assets/tech-icons/prometheus.svg';
 import nextdotjs from '../assets/tech-icons/nextdotjs.svg';
 import react from '../assets/tech-icons/react.svg';
 
+type AssetImport = string | { src: string };
+
+function assetUrl(asset: AssetImport): string {
+  return typeof asset === 'string' ? asset : asset.src;
+}
+
 const icons: Record<string, string> = {
-  Go: go,
-  Python: python,
-  Java: java,
-  Rust: rust,
-  TypeScript: typescript,
-  Shell: shell,
-  Kubernetes: kubernetes,
-  Helm: helm,
-  Terraform: terraform,
-  Docker: docker,
-  AWS: aws,
-  Azure: azure,
-  GCP: googlecloud,
-  PostgreSQL: postgresql,
-  DynamoDB: dynamodb,
-  CosmosDB: cosmosdb,
-  'GitHub Actions': githubactions,
-  Jenkins: jenkins,
-  Grafana: grafana,
-  Prometheus: prometheus,
-  'Next.js': nextdotjs,
-  React: react,
+  Go: assetUrl(go),
+  Python: assetUrl(python),
+  Java: assetUrl(java),
+  Rust: assetUrl(rust),
+  TypeScript: assetUrl(typescript),
+  Shell: assetUrl(shell),
+  Kubernetes: assetUrl(kubernetes),
+  Helm: assetUrl(helm),
+  Terraform: assetUrl(terraform),
+  Docker: assetUrl(docker),
+  AWS: assetUrl(aws),
+  Azure: assetUrl(azure),
+  GCP: assetUrl(googlecloud),
+  PostgreSQL: assetUrl(postgresql),
+  DynamoDB: assetUrl(dynamodb),
+  CosmosDB: assetUrl(cosmosdb),
+  'GitHub Actions': assetUrl(githubactions),
+  Jenkins: assetUrl(jenkins),
+  Grafana: assetUrl(grafana),
+  Prometheus: assetUrl(prometheus),
+  'Next.js': assetUrl(nextdotjs),
+  React: assetUrl(react),
 };
 
 export function techIconUrl(tag: string): string | undefined {

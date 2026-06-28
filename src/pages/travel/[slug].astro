@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TravelDetailIsland } from '../../islands/AppIslands';
+import { getTravelMeta, getTravelStaticPaths } from '../../lib/content-meta';
+
+export function getStaticPaths() {
+  return getTravelStaticPaths();
+}
+
+const { slug } = Astro.params;
+const meta = getTravelMeta(slug!);
+
+if (!meta) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  url={meta.url}
+  ogImage={meta.ogImage}
+>
+  <TravelDetailIsland client:load slug={slug!} />
+</BaseLayout>

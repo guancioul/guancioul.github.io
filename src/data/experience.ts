@@ -2,6 +2,12 @@ import cncfLogo from '../assets/logos/cncf.png';
 import trendMicroLogo from '../assets/logos/trend-micro.png';
 import cacLogo from '../assets/logos/cac.png';
 
+type LogoImport = string | { src: string };
+
+function logoUrl(logo: LogoImport): string {
+  return typeof logo === 'string' ? logo : logo.src;
+}
+
 export interface ExperienceTeam {
   name: string;
   period: string;
@@ -27,7 +33,7 @@ export const experience: ExperienceEntry[] = [
     period: 'Mar 2026 – Present',
     location: 'Remote',
     type: 'Volunteer',
-    logo: cncfLogo,
+    logo: logoUrl(cncfLogo),
     teams: [
       {
         name: 'Strimzi',
@@ -49,7 +55,7 @@ export const experience: ExperienceEntry[] = [
     period: 'Sep 2022 – Jan 2026',
     location: 'Taipei, Taiwan',
     type: 'Full-time',
-    logo: trendMicroLogo,
+    logo: logoUrl(trendMicroLogo),
     teams: [
       {
         name: 'POSEIDON',
@@ -74,6 +80,6 @@ export const experience: ExperienceEntry[] = [
     period: '2020 – 2022',
     location: 'Chiayi, Taiwan',
     type: 'Part-time',
-    logo: cacLogo,
+    logo: logoUrl(cacLogo),
   },
 ];

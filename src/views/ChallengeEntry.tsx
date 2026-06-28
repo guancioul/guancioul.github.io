@@ -1,31 +1,24 @@
 import { useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getChallengeBySlug } from '../lib/challenges';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useTranslation } from '../hooks/useTranslation';
 import './ChallengeEntry.css';
 
-export function ChallengeEntry() {
-  const { slug, date } = useParams<{ slug: string; date: string }>();
+export function ChallengeEntry({ slug, date }: { slug: string; date: string }) {
   const { t, locale } = useTranslation();
-  const challenge = slug ? getChallengeBySlug(slug, locale) : undefined;
+  const challenge = getChallengeBySlug(slug, locale);
   const entry = challenge?.entries.find((e) => e.date === date);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  useDocumentTitle(
-    entry?.title ?? (date ? t.challenges.entryNotFound : challenge?.title ?? t.nav.challenges),
-    t.common.name,
-  );
   useMarkdownEmbeds(bodyRef, entry?.content);
 
   if (!challenge || !entry) {
     return (
       <div className="challenge-entry-page">
-        <Link to={slug ? `/challenges/${slug}` : '/challenges'} className="challenge-entry-page__back">
+        <a href={slug ? `/challenges/${slug}` : '/challenges'} className="challenge-entry-page__back">
           {t.common.backTo(challenge?.title ?? t.challenges.singular)}
-        </Link>
+        </a>
         <p>{t.challenges.entryNotFound}</p>
       </div>
     );
@@ -37,9 +30,9 @@ export function ChallengeEntry() {
 
   return (
     <div className="challenge-entry-page">
-      <Link to={`/challenges/${challenge.slug}`} className="challenge-entry-page__back">
+      <a href={`/challenges/${challenge.slug}`} className="challenge-entry-page__back">
         {t.common.backTo(challenge.title)}
-      </Link>
+      </a>
 
       <h1 className="challenge-entry-page__title">{entry.title}</h1>
       <span className="challenge-entry-page__date mono">{entry.date}</span>
@@ -51,16 +44,16 @@ export function ChallengeEntry() {
 
       <div className="challenge-entry-page__nav">
         {prev ? (
-          <Link to={`/challenges/${challenge.slug}/${prev.date}`} className="challenge-entry-page__nav-link">
+          <a href={`/challenges/${challenge.slug}/${prev.date}`} className="challenge-entry-page__nav-link">
             ← {prev.date}
-          </Link>
+          </a>
         ) : (
           <span />
         )}
         {next && (
-          <Link to={`/challenges/${challenge.slug}/${next.date}`} className="challenge-entry-page__nav-link">
+          <a href={`/challenges/${challenge.slug}/${next.date}`} className="challenge-entry-page__nav-link">
             {next.date} →
-          </Link>
+          </a>
         )}
       </div>
     </div>

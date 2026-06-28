@@ -1,0 +1,66 @@
+---
+import '../index.css';
+import '../App.css';
+import { formatPageTitle, absoluteUrl, DEFAULT_OG_IMAGE } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  url?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = '',
+  url = Astro.url.pathname,
+  ogType = 'website',
+  ogImage = DEFAULT_OG_IMAGE,
+} = Astro.props;
+
+const pageTitle = formatPageTitle(title);
+const canonicalUrl = absoluteUrl(url);
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
+    <script is:inline>
+      (function () {
+        if (location.hash.startsWith('#/')) {
+          location.replace(location.hash.slice(1));
+          return;
+        }
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

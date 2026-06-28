@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-import { email, githubUrl, role } from '../data/profile';
 import personalPhoto from '../assets/avatar.png';
+import { email, githubUrl, role } from '../data/profile';
 import { useTranslation } from '../hooks/useTranslation';
 import './Hero.css';
 
@@ -10,7 +9,7 @@ export function Hero() {
   return (
     <section id="hero" className="hero">
       <div className="hero__content">
-        <img className="hero__avatar" src={personalPhoto} alt={t.common.name} />
+        <img className="hero__avatar" src={personalPhoto.src} alt={t.common.name} />
 
         <div className="hero__intro">
           <p className="hero__eyebrow mono">{t.hero.eyebrow}</p>
@@ -20,9 +19,9 @@ export function Hero() {
             <a className="hero__button hero__button--primary" href={githubUrl} target="_blank" rel="noopener">
               {t.hero.githubButton}
             </a>
-            <Link className="hero__button" to="/blog">
+            <a className="hero__button" href="/blog">
               {t.hero.blogButton}
-            </Link>
+            </a>
           </div>
         </div>
         <div className="hero__card">

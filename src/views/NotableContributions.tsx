@@ -1,7 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import { useTranslation } from '../hooks/useTranslation';
 import { highlights } from '../data/highlights';
 import { PRCard } from '../components/PRCard';
 import './NotableContributions.css';
@@ -27,27 +24,18 @@ for (const pr of allPrs) {
   group.prs.push(pr);
 }
 
-const PAGE_TITLE = 'Notable Contributions';
-
 export function NotableContributions() {
-  const { t } = useTranslation();
-  const location = useLocation();
   const isInitialMount = useRef(true);
 
-  useDocumentTitle(PAGE_TITLE, t.common.name);
-
   useEffect(() => {
-    if (location.hash) {
-      // On a fresh navigation into this page, the browser is still at whatever scroll
-      // position the previous page left it at — jump to the top first so the smooth
-      // scroll always animates downward to the anchor, not up from the middle of the page.
+    if (window.location.hash) {
       if (isInitialMount.current) {
         window.scrollTo(0, 0);
       }
-      document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     isInitialMount.current = false;
-  }, [location.hash]);
+  }, []);
 
   return (
     <div className="notable-contributions">

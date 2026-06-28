@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ChallengesIsland } from '../../islands/AppIslands';
+---
+
+<BaseLayout title="Challenges" description="Personal challenges and daily logs." url="/challenges">
+  <ChallengesIsland client:load />
+</BaseLayout>

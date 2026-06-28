@@ -1,6 +1,6 @@
 # guancioul.github.io
 
-Personal site, built as a React + Vite single-page app and deployed to GitHub Pages.
+Personal site, built as an Astro static site with React islands and deployed to GitHub Pages.
 
 ## What it looks like
 
@@ -16,7 +16,7 @@ A single scrolling page with a fixed scroll-spy dot nav:
 
 ### Blog (`/blog`, `/blog/:slug`)
 
-Posts are Markdown files in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`), rendered via `marked`. Routing uses `HashRouter` since the site is static GitHub Pages hosting with no server-side rewrites.
+Posts are Markdown files in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`), rendered via `marked`. Astro generates static HTML per route with Open Graph meta tags for social sharing. Legacy `#/` URLs redirect to path-based URLs automatically.
 
 **Blog vs Wiki:** blog posts are raw, time-ordered writing (what happened, when). Wiki pages are distilled handbooks written after a series is done — conclusions, checklists, links back to blog/challenge logs. Not every post becomes a wiki page.
 
@@ -26,7 +26,7 @@ Both the GitHub and CNCF widgets cache their responses in `localStorage` (10 min
 
 Evergreen handbook pages in `src/content/wiki/<section>/*.md`, grouped by section (`_section.md` per folder). Site-wide intro in `_meta.md`. Frontmatter: `title`, `summary`, `updatedAt`, `order`, optional `relatedPosts` / `relatedChallenges` (comma-separated slugs), optional `hidden: true` (omit from nav; direct URL still works). Translations use sibling `*.zh-TW.md` files (same pattern as blog/challenges).
 
-`WikiLayout` provides a desktop sticky sidebar and a mobile drawer (Contents button in a sub-bar under the site header). Pages use prev/next navigation across the visible page order. Copy `template.md` when adding a new page.
+`WikiShell` provides a desktop sticky sidebar and a mobile drawer (Contents button in a sub-bar under the site header). Pages use prev/next navigation across the visible page order. Copy `template.md` when adding a new page.
 
 Images go in `public/assets/wiki/<slug>/` and are referenced as `/assets/wiki/...` in markdown or `md-gallery` / `md-carousel` / `md-full-bleed` embeds.
 
@@ -40,7 +40,7 @@ Trip write-ups. Each trip is `src/content/travel/<slug>/meta.md` (frontmatter: `
 
 ### Markdown content embeds
 
-Available in any markdown body rendered via `dangerouslySetInnerHTML` (blog posts, wiki pages, challenge entries, travel write-ups) — the CSS lives in `src/index.css`, the interactive behavior is wired up by `src/hooks/useMarkdownEmbeds.ts`, called from each page's `BlogPost.tsx` / `WikiPage.tsx` / `ChallengeEntry.tsx` / `TravelDetail.tsx`:
+Available in any markdown body rendered via `dangerouslySetInnerHTML` (blog posts, wiki pages, challenge entries, travel write-ups) — the CSS lives in `src/index.css`, the interactive behavior is wired up by `src/hooks/useMarkdownEmbeds.ts`, called from each page's `BlogPost.tsx` / `WikiPage.tsx` / `ChallengeEntry.tsx` / `TravelDetail.tsx` in `src/views/`:
 
 - **`<div class="md-gallery"><img src="..."> ...</div>`** — a masonry grid (CSS multi-column, default 3 columns; override with `data-columns="2"`). Clicking a photo grows it in place to a centered preview (FLIP animation from the clicked thumbnail's on-screen position) while the rest of the gallery dims; closes on an outside click or `Escape`.
 - **`<div class="md-carousel"><img src="..."> ...</div>`** — a slideshow that auto-advances only while scrolled into view (pauses out of view), with prev/next buttons and swipe/drag support for manual navigation.
@@ -52,7 +52,7 @@ Available in any markdown body rendered via `dangerouslySetInnerHTML` (blog post
 
 ```bash
 npm install
-npm run dev       # vite dev server
+npm run dev       # astro dev server
 ```
 
 ```bash
@@ -66,13 +66,15 @@ npm run lint:md     # markdownlint
 
 ```text
 src/
+  pages/       Astro routes (*.astro) — file-based routing
+  layouts/     BaseLayout.astro (HTML shell, OG meta, theme script)
+  islands/     React island wrappers (PageFrame + views)
+  views/       React page components (BlogList, Home, WikiPage, …)
   data/        profile + highlights content (typed, no CMS)
   content/     blog posts, wiki handbooks, challenges, and travel write-ups (markdown + frontmatter)
-  hooks/       useTheme (dark mode), useMarkdownEmbeds (gallery/carousel behavior), ...
-  lib/         localStorage cache helper, markdown/frontmatter parsing, posts/wiki/challenges/travel loading
-  components/  Header, Hero, Footer, ScrollDots, Highlights, DevStat, GithubContributions, ThemeIcons, ...
-  pages/       Home, BlogList, BlogPost, WikiLayout, WikiHome, WikiPage, Challenges, ChallengeDetail, ChallengeEntry, Travel, TravelDetail
-  App.tsx      route table (/, /blog, /wiki, /challenges, /travel, ...)
+  hooks/       useTheme, useLocale, useMarkdownEmbeds, useActiveSection, …
+  lib/         cache, markdown/frontmatter parsing, posts/wiki/challenges/travel loading, content-meta
+  components/  Header, Hero, Footer, ScrollDots, DevStat, GithubContributions, PageFrame, …
 ```
 
 See `CLAUDE.md` / `AGENTS.md` for more detail on the architecture.

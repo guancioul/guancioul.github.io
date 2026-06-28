@@ -6,8 +6,8 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ```bash
 npm install
-npm run dev       # vite dev server
-npm run build     # tsc -b && vite build, outputs to dist/
+npm run dev       # astro dev server
+npm run build     # astro check && astro build, outputs to dist/
 npm run preview   # serve the production build locally
 npm run lint      # eslint .
 ```
@@ -16,21 +16,25 @@ There is no test suite. There is no `lint --fix` script; fix lint errors manuall
 
 ## Architecture
 
-Personal portfolio site: React + TypeScript + Vite SPA, deployed to GitHub Pages (`guancioul.github.io`, root domain, static hosting only — no server-side rewrites). Routing therefore uses `HashRouter` (`react-router-dom`) so direct links / refreshes on `/blog` and `/blog/:slug` never hit the GitHub Pages 404 (path-based routing would break on static hosting).
+Personal portfolio site: **Astro static site** with **React islands** (`@astrojs/react`), deployed to GitHub Pages (`guancioul.github.io`, root domain). Path-based routing (`/blog/hello-world`) — each route gets build-time static HTML with Open Graph meta tags. Legacy `#/` URLs redirect client-side via a script in `BaseLayout.astro`.
 
-`src/App.tsx` is the top-level shell: `Header` (always shown) + `<Routes>` for `/` (Home), `/blog` (BlogList), `/blog/:slug` (BlogPost) + `Footer` (always shown). The routed content is wrapped in a `<div key={location.pathname} className="page-transition">` that remounts and fades in on route change (`@keyframes page-fade-in` in `App.css`, opacity-only — do **not** add `transform` to this animation, since `ScrollDots` inside `Home` uses `position: fixed` and any non-`none` transform on an ancestor creates a new containing block, breaking its fixed-to-viewport positioning).
+**Routing:** Astro file-based routes in `src/pages/*.astro`. React page UI lives in `src/views/` and is mounted via island wrappers in `src/islands/AppIslands.tsx`, each wrapped in `PageFrame` (`LocaleProvider` + `Header` + `Footer`).
 
-**Home page (`src/pages/Home.tsx`)** is a single scrolling page, not separate routes: `Hero` + `About` + `OpenSource` sections (`<section id="hero">`, `#about`, `#open-source`), plus a fixed-position `ScrollDots` nav. `useActiveSection(sectionIds)` (`src/hooks/useActiveSection.ts`) is an `IntersectionObserver`-based hook returning the currently-most-visible section id; it's called independently in both `App.tsx` (for `Header`'s nav-link highlighting) and `Home.tsx` (for `ScrollDots`) — calling it twice is intentional and cheap, not a bug to dedupe. Pass a **stable** array reference for `sectionIds` (defined as a module-level constant, not an inline literal) since the hook's effect re-subscribes whenever the array reference changes.
+**SEO / OG:** `src/layouts/BaseLayout.astro` sets `<title>`, `og:*`, and `twitter:*` from Astro frontmatter props. Per-route metadata comes from `src/lib/content-meta.ts` (English base content at build time). Runtime locale switching does not affect OG tags (crawlers do not run JS).
 
-`Header` is route-aware: "About"/"Open Source" smooth-scroll via `scrollIntoView` when already on `/`, otherwise `navigate('/', { state: { scrollTo: id } })`; `Home` reads `location.state.scrollTo` in a one-shot effect (guarded by a ref) to scroll after navigating in from another route. "Blog", "Wiki", "Challenges", and "Travel" are real `react-router` `Link`s.
+**Home page (`src/views/Home.tsx`)** is a single scrolling page: `Hero` + `About` + `Experience` + `Skills` + `OpenSource` + fixed `ScrollDots`. `useActiveSection` drives scroll-spy highlighting in both `HomeIsland` (for `ScrollDots`) and `Header`. Cross-route "About" scroll uses `/?scrollTo=about` query param (read once on mount, then cleared with `history.replaceState`).
 
-**Blog (`src/pages/BlogList.tsx`, `BlogPost.tsx`)**: posts are Markdown files in `src/content/posts/*.md` with `---`-delimited frontmatter (`title`, `date`, `summary`). `src/lib/posts.ts` loads them at build time via `import.meta.glob('../content/posts/*.md', { eager: true, query: '?raw', import: 'default' })`, parses frontmatter with the hand-rolled `parseFrontmatter` in `src/lib/markdown.ts` (intentionally not `gray-matter`, to avoid its `js-yaml`/Buffer weight for 3 flat string fields), derives the slug from the filename, and sorts by `date` descending. `BlogPost` renders the body via `marked` + `dangerouslySetInnerHTML` — safe here because post content is self-authored in-repo, not user input.
+`Header` uses plain `<a href>` links (no React Router). "About" smooth-scrolls on `/`, otherwise navigates to `/?scrollTo=about`.
 
-**Wiki (`src/pages/WikiLayout.tsx`, `WikiHome.tsx`, `WikiPage.tsx`)**: handbook pages in `src/content/wiki/<section>/*.md` with per-section `_section.md` and site `_meta.md`. `src/lib/wiki.ts` builds a section tree (excludes `_meta`, `_section`, `template`, and `*.zh-TW.md` from page globs), supports locale fallbacks like `posts.ts`, and computes prev/next over the flattened nav order. `WikiLayout` wraps nested routes `/wiki` and `/wiki/:slug`: desktop sticky sidebar, mobile drawer. `WikiPage` must call `useMarkdownEmbeds` for gallery/carousel/lightbox. **Blog vs Wiki:** blog/challenge entries are raw logs; wiki pages are post-hoc distilled recaps — link via `relatedPosts` / `relatedChallenges` frontmatter (UI for those links is Phase 2; fields are parsed in Phase 1).
+**Blog (`src/views/BlogList.tsx`, `BlogPost.tsx`)**: posts in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`). `src/lib/posts.ts` loads via `import.meta.glob` + hand-rolled `parseFrontmatter` in `src/lib/markdown.ts`. Sibling `*.zh-TW.md` files provide runtime locale overrides. `BlogPost` renders via `marked` + `dangerouslySetInnerHTML` + `useMarkdownEmbeds`.
 
-**Widgets fetching live external data** (`GithubContributions.tsx`, `DevStat.tsx`) call public APIs directly from the browser (GitHub Search API, `devstats.cncf.io`) and cache responses in `localStorage` via the shared `src/lib/cache.ts` helper (`cacheGet`/`cacheSet` with a TTL baked into each call site — 10 min for GitHub data, 6 hr for DevStat). When modifying these, initialize React state from `cacheGet(...)` via `useState(() => ...)` (lazy initializer) rather than setting it inside `useEffect`, to avoid a synchronous `setState`-in-effect lint error (`react-hooks/set-state-in-effect`).
+**Wiki (`src/views/WikiShell.tsx`, `WikiHome.tsx`, `WikiPage.tsx`)**: handbook pages in `src/content/wiki/<section>/*.md`. `src/lib/wiki.ts` builds section tree, locale fallbacks, prev/next nav. `WikiShell` provides desktop sidebar + mobile drawer.
 
-**Styling**: plain per-component CSS files (no Tailwind, no CSS-in-JS, no UI library) importing shared tokens from `src/index.css` (`--color-bg`, `--color-surface`, `--color-text`, `--color-text-muted`, `--color-border`, `--color-accent`, `--font-sans`, `--font-mono`). `App.css` holds the home page's two-column `.page` grid (`grid-template-columns: 200px 1fr`, collapsing to one column under `768px`) used by `About`/`OpenSource`/`SectionHeading` — this grid is specific to numbered home sections; blog pages use their own simpler centered single-column layout, not `.page`. Be careful with broad selectors like `.page p` or `.app-main p` — a prior bug had such a rule leak into `Hero`'s dark card text because it had higher specificity than the card's own class; scope new global-ish rules narrowly.
+**Widgets fetching live external data** (`GithubContributions.tsx`, `DevStat.tsx`, `LeetCodeStats.tsx`) call public APIs from the browser and cache in `localStorage` via `src/lib/cache.ts`. Initialize React state from `cacheGet(...)` via lazy `useState(() => ...)` initializer.
+
+**Content collections (`src/content.config.ts`)**: Astro schemas for posts/travel (build-time validation). The posts glob auto-discovers base `*.md` files (excludes `*.zh-TW.md`). Runtime content loading still uses `src/lib/*.ts` loaders for locale support.
+
+**Styling**: plain per-component CSS, shared tokens in `src/index.css`. `App.css` holds app shell + home `.page` grid. Do **not** add `transform` to animations on ancestors of fixed `ScrollDots` (breaks `position: fixed`).
 
 ## Deploy
 

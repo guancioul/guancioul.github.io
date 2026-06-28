@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { NotableContributionsIsland } from '../islands/AppIslands';
+---
+
+<BaseLayout
+  title="Notable Contributions"
+  description="Selected open source pull requests across CNCF projects."
+  url="/notable-contributions"
+>
+  <NotableContributionsIsland client:load />
+</BaseLayout>

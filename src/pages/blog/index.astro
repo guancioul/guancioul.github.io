@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { BlogListIsland } from '../../islands/AppIslands';
+---
+
+<BaseLayout title="Blog" description="Blog posts by Kuan-Hao Lai." url="/blog">
+  <BlogListIsland client:load />
+</BaseLayout>
