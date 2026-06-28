@@ -10,23 +10,27 @@ npm run dev       # astro dev server
 npm run build     # astro check && astro build, outputs to dist/
 npm run preview   # serve the production build locally
 npm run lint      # eslint .
+npm run test      # vitest run
+npm run test:watch # vitest (watch mode)
 ```
 
-There is no test suite. There is no `lint --fix` script; fix lint errors manually.
+There is no test suite beyond Vitest unit tests in `tests/**/*.test.ts`. Run `npm run test` before pushing i18n routing changes.
 
 ## Architecture
 
 Personal portfolio site: **Astro static site** with **React islands** (`@astrojs/react`), deployed to GitHub Pages (`guancioul.github.io`, root domain). Path-based routing (`/blog/hello-world`) — each route gets build-time static HTML with Open Graph meta tags. Legacy `#/` URLs redirect client-side via a script in `BaseLayout.astro`.
 
-**Routing:** Astro file-based routes in `src/pages/*.astro`. React page UI lives in `src/views/` and is mounted via island wrappers in `src/islands/AppIslands.tsx`, each wrapped in `PageFrame` (`LocaleProvider` + `Header` + `Footer`).
+**Routing:** Astro file-based routes in `src/pages/*.astro` (English) and `src/pages/zh-TW/*.astro` (Traditional Chinese). Shared page logic lives in `src/route-templates/*.astro`. React page UI lives in `src/views/` and is mounted via island wrappers in `src/islands/AppIslands.tsx`, each wrapped in `PageFrame` (`LocaleProvider` + `Header` + `Footer`). Islands receive a `locale` prop from Astro (`'en' | 'zh-TW'`).
 
-**SEO / OG:** `src/layouts/BaseLayout.astro` sets `<title>`, `og:*`, and `twitter:*` from Astro frontmatter props. Per-route metadata comes from `src/lib/content-meta.ts` (English base content at build time). Runtime locale switching does not affect OG tags (crawlers do not run JS).
+**i18n:** Route-based locales (`astro.config.mjs` → `i18n.routing.prefixDefaultLocale: false`). English at default paths (`/wiki/foo`); Chinese under `/zh-TW/` (`/zh-TW/wiki/foo`). Locale comes from the URL, not `localStorage`. Language switcher navigates to the paired URL via `switchLocalePath`. Internal links use `useLocalizedPath()` / `localizedPath()`. Missing `*.zh-TW.md` content silently falls back to English body at build time. View Transitions via `ClientRouter` in `BaseLayout.astro`.
 
-**Home page (`src/views/Home.tsx`)** is a single scrolling page: `Hero` + `About` + `Experience` + `Skills` + `OpenSource` + fixed `ScrollDots`. `useActiveSection` drives scroll-spy highlighting in both `HomeIsland` (for `ScrollDots`) and `Header`. Cross-route "About" scroll uses `/?scrollTo=about` query param (read once on mount, then cleared with `history.replaceState`).
+**SEO / OG:** `src/layouts/BaseLayout.astro` sets `<html lang>`, `<title>`, `og:*`, and `twitter:*` per locale at build time. Metadata from `src/lib/content-meta.ts` (pass `locale`).
 
-`Header` uses plain `<a href>` links (no React Router). "About" smooth-scrolls on `/`, otherwise navigates to `/?scrollTo=about`.
+**Home page (`src/views/Home.tsx`)** is a single scrolling page: `Hero` + `About` + `Experience` + `Skills` + `OpenSource` + fixed `ScrollDots`. `useActiveSection` drives scroll-spy highlighting in both `HomeIsland` (for `ScrollDots`) and `Header`. Cross-route "About" scroll uses `/?scrollTo=about` (or `/zh-TW/?scrollTo=about`); cleared with `history.replaceState` to the locale home path.
 
-**Blog (`src/views/BlogList.tsx`, `BlogPost.tsx`)**: posts in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`). `src/lib/posts.ts` loads via `import.meta.glob` + hand-rolled `parseFrontmatter` in `src/lib/markdown.ts`. Sibling `*.zh-TW.md` files provide runtime locale overrides. `BlogPost` renders via `marked` + `dangerouslySetInnerHTML` + `useMarkdownEmbeds`.
+`Header` uses locale-aware `<a href>` links. "About" smooth-scrolls on home, otherwise navigates to `{home}?scrollTo=about`.
+
+**Blog (`src/views/BlogList.tsx`, `BlogPost.tsx`)**: posts in `src/content/posts/*.md` with frontmatter (`title`, `date`, `summary`). `src/lib/posts.ts` loads via `import.meta.glob` + hand-rolled `parseFrontmatter` in `src/lib/markdown.ts`. Sibling `*.zh-TW.md` files provide locale overrides (fallback to English when missing).
 
 **Wiki (`src/views/WikiShell.tsx`, `WikiHome.tsx`, `WikiPage.tsx`)**: handbook pages in `src/content/wiki/<section>/*.md`. `src/lib/wiki.ts` builds section tree, locale fallbacks, prev/next nav. `WikiShell` provides desktop sidebar + mobile drawer.
 

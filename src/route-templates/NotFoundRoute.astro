@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { NotFoundIsland } from '../islands/AppIslands';
+import { getNotFoundMeta } from '../lib/content-meta';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getNotFoundMeta(locale);
+---
+
+<BaseLayout locale={locale} title={meta.title} url={meta.url}>
+  <NotFoundIsland client:load locale={locale} />
+</BaseLayout>

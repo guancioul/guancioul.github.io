@@ -1,8 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { TravelIsland } from '../../islands/AppIslands';
+import TravelListRoute from '../../route-templates/TravelListRoute.astro';
 ---
 
-<BaseLayout title="Travel" description="Travel logs and trip notes." url="/travel">
-  <TravelIsland client:load />
-</BaseLayout>
+<TravelListRoute locale="en" />

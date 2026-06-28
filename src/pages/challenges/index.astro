@@ -1,8 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { ChallengesIsland } from '../../islands/AppIslands';
+import ChallengesListRoute from '../../route-templates/ChallengesListRoute.astro';
 ---
 
-<BaseLayout title="Challenges" description="Personal challenges and daily logs." url="/challenges">
-  <ChallengesIsland client:load />
-</BaseLayout>
+<ChallengesListRoute locale="en" />

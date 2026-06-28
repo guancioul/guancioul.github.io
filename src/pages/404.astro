@@ -1,8 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { NotFoundIsland } from '../islands/AppIslands';
+import NotFoundRoute from '../route-templates/NotFoundRoute.astro';
 ---
 
-<BaseLayout title="404" url="/404">
-  <NotFoundIsland client:load />
-</BaseLayout>
+<NotFoundRoute locale="en" />

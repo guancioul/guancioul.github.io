@@ -1,8 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { HomeIsland } from '../islands/AppIslands';
+import HomeRoute from '../route-templates/HomeRoute.astro';
 ---
 
-<BaseLayout>
-  <HomeIsland client:load />
-</BaseLayout>
+<HomeRoute locale="en" />

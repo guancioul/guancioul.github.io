@@ -4,6 +4,7 @@ import { getAdjacentWikiPages, getWikiPageBySlug } from '../lib/wiki';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './WikiPage.css';
 
 function scrollToHeading(id: string) {
@@ -12,6 +13,7 @@ function scrollToHeading(id: string) {
 
 export function WikiPage({ slug }: { slug: string }) {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const { closeDrawer } = useWikiDrawer();
   const page = getWikiPageBySlug(slug, locale);
   const adjacent = getAdjacentWikiPages(slug, locale);
@@ -27,7 +29,7 @@ export function WikiPage({ slug }: { slug: string }) {
   if (!page) {
     return (
       <div className="wiki-article">
-        <a href="/wiki" className="wiki-article__back">
+        <a href={lp('/wiki')} className="wiki-article__back">
           {t.common.backTo(t.nav.wiki)}
         </a>
         <p>{t.wiki.notFound}</p>
@@ -54,7 +56,7 @@ export function WikiPage({ slug }: { slug: string }) {
           <nav className="wiki-article__pager" aria-label="Wiki page navigation">
             {adjacent.prev ? (
               <a
-                href={`/wiki/${adjacent.prev.slug}`}
+                href={lp(`/wiki/${adjacent.prev.slug}`)}
                 className="wiki-article__pager-link wiki-article__pager-link--prev"
                 onClick={closeDrawer}
               >
@@ -66,7 +68,7 @@ export function WikiPage({ slug }: { slug: string }) {
             )}
             {adjacent.next ? (
               <a
-                href={`/wiki/${adjacent.next.slug}`}
+                href={lp(`/wiki/${adjacent.next.slug}`)}
                 className="wiki-article__pager-link wiki-article__pager-link--next"
                 onClick={closeDrawer}
               >

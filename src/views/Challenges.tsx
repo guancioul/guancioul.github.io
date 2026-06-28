@@ -1,9 +1,11 @@
 import { getAllChallenges } from '../lib/challenges';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './Challenges.css';
 
 export function Challenges() {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const challenges = getAllChallenges(locale);
 
   return (
@@ -21,7 +23,7 @@ export function Challenges() {
               : null;
 
             return (
-              <a href={`/challenges/${challenge.slug}`} className="challenge-card" key={challenge.slug}>
+              <a href={lp(`/challenges/${challenge.slug}`)} className="challenge-card" key={challenge.slug}>
                 {challenge.image && (
                   <div className="challenge-card__image" style={{ backgroundImage: `url(${challenge.image})` }} />
                 )}

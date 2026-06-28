@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import { MoonIcon, SunIcon } from './ThemeIcons';
 import './Header.css';
 
@@ -14,6 +15,7 @@ export function Header({
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { locale, setLocale, t } = useTranslation();
+  const lp = useLocalizedPath();
   const isHome = currentPath === '/';
   const isBlog = currentPath.startsWith('/blog');
   const isWiki = currentPath.startsWith('/wiki');
@@ -32,7 +34,7 @@ export function Header({
     if (isHome) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      window.location.assign(`/?scrollTo=${id}`);
+      window.location.assign(`${lp('/')}?scrollTo=${id}`);
     }
   }
 
@@ -41,7 +43,7 @@ export function Header({
     if (isHome) {
       document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      window.location.assign('/');
+      window.location.assign(lp('/'));
     }
   }
 
@@ -73,28 +75,28 @@ export function Header({
           </button>
         ))}
         <a
-          href="/blog"
+          href={lp('/blog')}
           className={`site-header__link${isBlog ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.blog}
         </a>
         <a
-          href="/wiki"
+          href={lp('/wiki')}
           className={`site-header__link${isWiki ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.wiki}
         </a>
         <a
-          href="/challenges"
+          href={lp('/challenges')}
           className={`site-header__link${isChallenges ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >
           {t.nav.challenges}
         </a>
         <a
-          href="/travel"
+          href={lp('/travel')}
           className={`site-header__link${isTravel ? ' site-header__link--active' : ''}`}
           onClick={() => setMenuOpen(false)}
         >

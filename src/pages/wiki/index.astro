@@ -1,11 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getWikiHomeMeta } from '../../lib/content-meta';
-import { WikiHomeIsland } from '../../islands/AppIslands';
-
-const meta = getWikiHomeMeta();
+import WikiHomeRoute from '../../route-templates/WikiHomeRoute.astro';
 ---
 
-<BaseLayout title={meta.title} description={meta.description} url={meta.url}>
-  <WikiHomeIsland client:load />
-</BaseLayout>
+<WikiHomeRoute locale="en" />

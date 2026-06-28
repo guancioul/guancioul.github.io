@@ -3,10 +3,12 @@ import { renderMarkdown } from '../lib/markdown';
 import { getChallengeBySlug } from '../lib/challenges';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './ChallengeEntry.css';
 
 export function ChallengeEntry({ slug, date }: { slug: string; date: string }) {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const challenge = getChallengeBySlug(slug, locale);
   const entry = challenge?.entries.find((e) => e.date === date);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -16,7 +18,7 @@ export function ChallengeEntry({ slug, date }: { slug: string; date: string }) {
   if (!challenge || !entry) {
     return (
       <div className="challenge-entry-page">
-        <a href={slug ? `/challenges/${slug}` : '/challenges'} className="challenge-entry-page__back">
+        <a href={slug ? lp(`/challenges/${slug}`) : lp('/challenges')} className="challenge-entry-page__back">
           {t.common.backTo(challenge?.title ?? t.challenges.singular)}
         </a>
         <p>{t.challenges.entryNotFound}</p>
@@ -30,7 +32,7 @@ export function ChallengeEntry({ slug, date }: { slug: string; date: string }) {
 
   return (
     <div className="challenge-entry-page">
-      <a href={`/challenges/${challenge.slug}`} className="challenge-entry-page__back">
+      <a href={lp(`/challenges/${challenge.slug}`)} className="challenge-entry-page__back">
         {t.common.backTo(challenge.title)}
       </a>
 
@@ -44,14 +46,14 @@ export function ChallengeEntry({ slug, date }: { slug: string; date: string }) {
 
       <div className="challenge-entry-page__nav">
         {prev ? (
-          <a href={`/challenges/${challenge.slug}/${prev.date}`} className="challenge-entry-page__nav-link">
+          <a href={lp(`/challenges/${challenge.slug}/${prev.date}`)} className="challenge-entry-page__nav-link">
             ← {prev.date}
           </a>
         ) : (
           <span />
         )}
         {next && (
-          <a href={`/challenges/${challenge.slug}/${next.date}`} className="challenge-entry-page__nav-link">
+          <a href={lp(`/challenges/${challenge.slug}/${next.date}`)} className="challenge-entry-page__nav-link">
             {next.date} →
           </a>
         )}

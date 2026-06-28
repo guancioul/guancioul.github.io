@@ -1,20 +1,12 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { WikiPageIsland } from '../../islands/AppIslands';
-import { getWikiPageMeta, getWikiPageStaticPaths } from '../../lib/content-meta';
+import WikiPageRoute from '../../route-templates/WikiPageRoute.astro';
+import { getWikiPageStaticPaths } from '../../lib/content-meta';
 
 export function getStaticPaths() {
   return getWikiPageStaticPaths();
 }
 
 const { slug } = Astro.params;
-const meta = getWikiPageMeta(slug!);
-
-if (!meta) {
-  return Astro.redirect('/404');
-}
 ---
 
-<BaseLayout title={meta.title} description={meta.description} url={meta.url}>
-  <WikiPageIsland client:load slug={slug!} />
-</BaseLayout>
+<WikiPageRoute locale="en" slug={slug!} />

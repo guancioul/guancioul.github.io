@@ -1,35 +1,30 @@
-import { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
-import { defaultLocale, locales, type Locale } from '../i18n';
+import { useEffect, type ReactNode } from 'react';
+import { navigate } from 'astro:transitions/client';
+import { locales, type Locale } from '../i18n';
+import { buildLocaleSwitchUrl, saveLocaleSwitchScroll } from '../lib/locale-scroll';
 import { LocaleContext } from './localeContext';
 
-const STORAGE_KEY = 'locale';
-
-function isLocale(value: string | null): value is Locale {
-  return value === 'en' || value === 'zh-TW';
-}
-
-function getInitialLocale(): Locale {
-  if (typeof window === 'undefined') return defaultLocale;
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (isLocale(stored)) return stored;
-  } catch {
-    // localStorage unavailable (private mode, quota) — fall through to language detection
-  }
-  return navigator.language.startsWith('zh') ? 'zh-TW' : defaultLocale;
-}
-
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(getInitialLocale);
+export function LocaleProvider({
+  locale,
+  children,
+}: {
+  locale: Locale;
+  children: ReactNode;
+}) {
+  const setLocale = (next: Locale) => {
+    if (next === locale) return;
+    saveLocaleSwitchScroll();
+    const url = buildLocaleSwitchUrl(
+      window.location.pathname,
+      window.location.search,
+      window.location.hash,
+      next,
+    );
+    void navigate(url);
+  };
 
   useEffect(() => {
-    document.documentElement.setAttribute('lang', locale);
-    try {
-      localStorage.setItem(STORAGE_KEY, locale);
-    } catch {
-      // localStorage unavailable — skip persisting
-    }
+    document.documentElement.setAttribute('lang', locale === 'zh-TW' ? 'zh-TW' : 'en');
   }, [locale]);
 
   return <LocaleContext value={{ locale, setLocale, t: locales[locale] }}>{children}</LocaleContext>;

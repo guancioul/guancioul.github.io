@@ -1,26 +1,12 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { ChallengeEntryIsland } from '../../../islands/AppIslands';
-import { getChallengeEntryMeta, getChallengeEntryStaticPaths } from '../../../lib/content-meta';
+import ChallengeEntryRoute from '../../../route-templates/ChallengeEntryRoute.astro';
+import { getChallengeEntryStaticPaths } from '../../../lib/content-meta';
 
 export function getStaticPaths() {
   return getChallengeEntryStaticPaths();
 }
 
 const { slug, date } = Astro.params;
-const meta = getChallengeEntryMeta(slug!, date!);
-
-if (!meta) {
-  return Astro.redirect('/404');
-}
 ---
 
-<BaseLayout
-  title={meta.title}
-  description={meta.description}
-  url={meta.url}
-  ogType={meta.ogType}
-  ogImage={meta.ogImage}
->
-  <ChallengeEntryIsland client:load slug={slug!} date={date!} />
-</BaseLayout>
+<ChallengeEntryRoute locale="en" slug={slug!} date={date!} />

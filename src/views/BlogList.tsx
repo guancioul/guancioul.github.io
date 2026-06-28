@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { getAllPosts } from '../lib/posts';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './BlogList.css';
 
 const PER_PAGE = 5;
 
 export function BlogList() {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const posts = getAllPosts(locale);
   const [page, setPage] = useState(1);
 
@@ -25,7 +27,7 @@ export function BlogList() {
           {pageItems.map((post) => (
             <article className="blog-list__item" key={post.slug}>
               <div className="blog-list__item-header">
-                <a href={`/blog/${post.slug}`} className="blog-list__item-title">
+                <a href={lp(`/blog/${post.slug}`)} className="blog-list__item-title">
                   {post.title}
                 </a>
                 <span className="blog-list__item-date mono">{post.date}</span>

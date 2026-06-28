@@ -1,10 +1,12 @@
 import { getWikiHandbookMeta, getWikiSections } from '../lib/wiki';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLocalizedPath } from '../hooks/useLocalizedPath';
 import './WikiHome.css';
 
 export function WikiHome() {
   const { t, locale } = useTranslation();
+  const lp = useLocalizedPath();
   const { closeDrawer } = useWikiDrawer();
   const meta = getWikiHandbookMeta(locale);
   const sections = getWikiSections(locale);
@@ -24,7 +26,7 @@ export function WikiHome() {
               <ul className="wiki-home__pages">
                 {section.pages.map((page) => (
                   <li className="wiki-home__page" key={page.slug}>
-                    <a href={`/wiki/${page.slug}`} className="wiki-home__page-link" onClick={closeDrawer}>
+                    <a href={lp(`/wiki/${page.slug}`)} className="wiki-home__page-link" onClick={closeDrawer}>
                       {page.title}
                     </a>
                     {page.summary && <p className="wiki-home__page-summary">{page.summary}</p>}

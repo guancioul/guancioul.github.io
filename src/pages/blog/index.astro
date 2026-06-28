@@ -1,8 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { BlogListIsland } from '../../islands/AppIslands';
+import BlogListRoute from '../../route-templates/BlogListRoute.astro';
 ---
 
-<BaseLayout title="Blog" description="Blog posts by Kuan-Hao Lai." url="/blog">
-  <BlogListIsland client:load />
-</BaseLayout>
+<BlogListRoute locale="en" />

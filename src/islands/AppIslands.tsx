@@ -1,3 +1,4 @@
+import type { Locale } from '../i18n';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { PageFrame } from '../components/PageFrame';
 import { Home, HOME_SECTION_IDS } from '../views/Home';
@@ -15,90 +16,98 @@ import { WikiHome } from '../views/WikiHome';
 import { WikiPage } from '../views/WikiPage';
 import '../views/NotFound.css';
 
-export function HomeIsland() {
+export function HomeIsland({ locale }: { locale: Locale }) {
   const activeSection = useActiveSection(HOME_SECTION_IDS);
   return (
-    <PageFrame currentPath="/" activeSection={activeSection}>
+    <PageFrame locale={locale} currentPath="/" activeSection={activeSection}>
       <Home />
     </PageFrame>
   );
 }
 
-export function BlogListIsland() {
+export function BlogListIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/blog">
+    <PageFrame locale={locale} currentPath="/blog">
       <BlogList />
     </PageFrame>
   );
 }
 
-export function BlogPostIsland({ slug }: { slug: string }) {
+export function BlogPostIsland({ slug, locale }: { slug: string; locale: Locale }) {
   return (
-    <PageFrame currentPath={`/blog/${slug}`}>
+    <PageFrame locale={locale} currentPath={`/blog/${slug}`}>
       <BlogPost slug={slug} />
     </PageFrame>
   );
 }
 
-export function ChallengesIsland() {
+export function ChallengesIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/challenges">
+    <PageFrame locale={locale} currentPath="/challenges">
       <Challenges />
     </PageFrame>
   );
 }
 
-export function ChallengeDetailIsland({ slug }: { slug: string }) {
+export function ChallengeDetailIsland({ slug, locale }: { slug: string; locale: Locale }) {
   return (
-    <PageFrame currentPath={`/challenges/${slug}`}>
+    <PageFrame locale={locale} currentPath={`/challenges/${slug}`}>
       <ChallengeDetail slug={slug} />
     </PageFrame>
   );
 }
 
-export function ChallengeEntryIsland({ slug, date }: { slug: string; date: string }) {
+export function ChallengeEntryIsland({
+  slug,
+  date,
+  locale,
+}: {
+  slug: string;
+  date: string;
+  locale: Locale;
+}) {
   return (
-    <PageFrame currentPath={`/challenges/${slug}/${date}`}>
+    <PageFrame locale={locale} currentPath={`/challenges/${slug}/${date}`}>
       <ChallengeEntry slug={slug} date={date} />
     </PageFrame>
   );
 }
 
-export function TravelIsland() {
+export function TravelIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/travel">
+    <PageFrame locale={locale} currentPath="/travel">
       <Travel />
     </PageFrame>
   );
 }
 
-export function TravelDetailIsland({ slug }: { slug: string }) {
+export function TravelDetailIsland({ slug, locale }: { slug: string; locale: Locale }) {
   return (
-    <PageFrame currentPath={`/travel/${slug}`}>
+    <PageFrame locale={locale} currentPath={`/travel/${slug}`}>
       <TravelDetail slug={slug} />
     </PageFrame>
   );
 }
 
-export function NotableContributionsIsland() {
+export function NotableContributionsIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/notable-contributions">
+    <PageFrame locale={locale} currentPath="/notable-contributions">
       <NotableContributions />
     </PageFrame>
   );
 }
 
-export function NotFoundIsland() {
+export function NotFoundIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/404">
+    <PageFrame locale={locale} currentPath="/404">
       <NotFoundView />
     </PageFrame>
   );
 }
 
-export function WikiHomeIsland() {
+export function WikiHomeIsland({ locale }: { locale: Locale }) {
   return (
-    <PageFrame currentPath="/wiki">
+    <PageFrame locale={locale} currentPath="/wiki">
       <WikiShell>
         <WikiHome />
       </WikiShell>
@@ -106,9 +115,9 @@ export function WikiHomeIsland() {
   );
 }
 
-export function WikiPageIsland({ slug }: { slug: string }) {
+export function WikiPageIsland({ slug, locale }: { slug: string; locale: Locale }) {
   return (
-    <PageFrame currentPath={`/wiki/${slug}`}>
+    <PageFrame locale={locale} currentPath={`/wiki/${slug}`}>
       <WikiShell activeSlug={slug}>
         <WikiPage slug={slug} />
       </WikiShell>
