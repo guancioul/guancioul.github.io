@@ -1,17 +1,19 @@
+import {
+  GitMergeIcon,
+  GitPullRequestClosedIcon,
+  GitPullRequestDraftIcon,
+  GitPullRequestIcon,
+  IssueClosedIcon,
+  IssueOpenedIcon,
+} from '@primer/octicons-react';
 import { useEffect, useState } from 'react';
 import { cacheGet, cacheSet } from '../lib/cache';
 import { mockGithubItems } from '../lib/mockData';
-import {
-  IssueClosedIcon,
-  IssueOpenIcon,
-  PrClosedIcon,
-  PrDraftIcon,
-  PrMergedIcon,
-  PrOpenIcon,
-} from './StatusIcons';
 import './GithubContributions.css';
 
 const PER_PAGE = 5;
+const ICON_SIZE = 16;
+const ICON_SIZE_SM = 14;
 const API_BATCH = 100;
 const CACHE_TTL = 10 * 60 * 1000;
 
@@ -80,15 +82,23 @@ function repoFromUrl(url: string) {
 }
 
 function PrStatusIcon({ item }: { item: GithubItem }) {
-  if (item.pull_request?.merged_at) return <PrMergedIcon className="gh-pr-icon gh-pr-icon--merged" />;
-  if (item.draft) return <PrDraftIcon className="gh-pr-icon gh-pr-icon--draft" />;
-  if (item.state === 'open') return <PrOpenIcon className="gh-pr-icon gh-pr-icon--open" />;
-  return <PrClosedIcon className="gh-pr-icon gh-pr-icon--closed" />;
+  if (item.pull_request?.merged_at) {
+    return <GitMergeIcon className="gh-pr-icon gh-pr-icon--merged" size={ICON_SIZE} aria-hidden />;
+  }
+  if (item.draft) {
+    return <GitPullRequestDraftIcon className="gh-pr-icon gh-pr-icon--draft" size={ICON_SIZE} aria-hidden />;
+  }
+  if (item.state === 'open') {
+    return <GitPullRequestIcon className="gh-pr-icon gh-pr-icon--open" size={ICON_SIZE} aria-hidden />;
+  }
+  return <GitPullRequestClosedIcon className="gh-pr-icon gh-pr-icon--closed" size={ICON_SIZE} aria-hidden />;
 }
 
 function IssueStatusIcon({ item }: { item: GithubItem }) {
-  if (item.state === 'open') return <IssueOpenIcon className="gh-pr-icon gh-pr-icon--open" />;
-  return <IssueClosedIcon className="gh-pr-icon gh-pr-icon--issue-closed" />;
+  if (item.state === 'open') {
+    return <IssueOpenedIcon className="gh-pr-icon gh-pr-icon--open" size={ICON_SIZE} aria-hidden />;
+  }
+  return <IssueClosedIcon className="gh-pr-icon gh-pr-icon--issue-closed" size={ICON_SIZE} aria-hidden />;
 }
 
 function buildPageList(page: number, totalPages: number): (number | '...')[] {
@@ -179,11 +189,15 @@ function Panel({ type, items, error }: { type: TabKey; items: GithubItem[] | nul
     <>
       <div className="gh-pr-header">
         <span className="gh-pr-count gh-pr-count--open">
-          {isPR ? <PrOpenIcon className="gh-pr-icon gh-pr-icon--open gh-pr-icon--sm" /> : <IssueOpenIcon className="gh-pr-icon gh-pr-icon--open gh-pr-icon--sm" />}
+          {isPR ? (
+            <GitPullRequestIcon className="gh-pr-icon gh-pr-icon--open gh-pr-icon--sm" size={ICON_SIZE_SM} aria-hidden />
+          ) : (
+            <IssueOpenedIcon className="gh-pr-icon gh-pr-icon--open gh-pr-icon--sm" size={ICON_SIZE_SM} aria-hidden />
+          )}
           {openCount} Open
         </span>
         <span className="gh-pr-count gh-pr-count--closed">
-          <PrMergedIcon className="gh-pr-icon gh-pr-icon--merged gh-pr-icon--sm" />
+          <GitMergeIcon className="gh-pr-icon gh-pr-icon--merged gh-pr-icon--sm" size={ICON_SIZE_SM} aria-hidden />
           {closedCount} Closed
         </span>
         <span className="gh-pr-page-info">
@@ -251,7 +265,7 @@ export function GithubContributions({ username }: { username: string }) {
           aria-selected={activeTab === 'prs'}
           onClick={() => setActiveTab('prs')}
         >
-          <PrOpenIcon className="gh-tab-icon" />
+          <GitPullRequestIcon className="gh-tab-icon" size={ICON_SIZE} aria-hidden />
           Pull Requests
           <span className="gh-tab-count">{prItems ? prItems.length : '…'}</span>
         </button>
@@ -262,7 +276,7 @@ export function GithubContributions({ username }: { username: string }) {
           aria-selected={activeTab === 'issues'}
           onClick={() => setActiveTab('issues')}
         >
-          <IssueOpenIcon className="gh-tab-icon" />
+          <IssueOpenedIcon className="gh-tab-icon" size={ICON_SIZE} aria-hidden />
           Issues
           <span className="gh-tab-count">{issueItems ? issueItems.length : '…'}</span>
         </button>
