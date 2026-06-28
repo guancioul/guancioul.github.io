@@ -2,14 +2,18 @@ import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getTripBySlug } from '../lib/travel';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
+import { useTranslation } from '../hooks/useTranslation';
 import './TravelDetail.css';
 
 export function TravelDetail() {
   const { slug } = useParams<{ slug: string }>();
   const trip = slug ? getTripBySlug(slug) : undefined;
   const bodyRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
+  useDocumentTitle(trip?.title ?? (slug ? 'Trip not found' : t.nav.travel), t.common.name);
   useMarkdownEmbeds(bodyRef, trip?.content);
 
   if (!trip) {

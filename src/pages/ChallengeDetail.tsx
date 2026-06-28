@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { getChallengeBySlug } from '../lib/challenges';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './ChallengeDetail.css';
 
@@ -7,6 +8,11 @@ export function ChallengeDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { t, locale } = useTranslation();
   const challenge = slug ? getChallengeBySlug(slug, locale) : undefined;
+
+  useDocumentTitle(
+    challenge?.title ?? (slug ? t.challenges.notFound : t.nav.challenges),
+    t.common.name,
+  );
 
   if (!challenge) {
     return (

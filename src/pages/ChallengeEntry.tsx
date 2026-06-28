@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { renderMarkdown } from '../lib/markdown';
 import { getChallengeBySlug } from '../lib/challenges';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useTranslation } from '../hooks/useTranslation';
 import './ChallengeEntry.css';
@@ -13,6 +14,10 @@ export function ChallengeEntry() {
   const entry = challenge?.entries.find((e) => e.date === date);
   const bodyRef = useRef<HTMLDivElement>(null);
 
+  useDocumentTitle(
+    entry?.title ?? (date ? t.challenges.entryNotFound : challenge?.title ?? t.nav.challenges),
+    t.common.name,
+  );
   useMarkdownEmbeds(bodyRef, entry?.content);
 
   if (!challenge || !entry) {

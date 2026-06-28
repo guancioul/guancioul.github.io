@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getWikiHandbookMeta, getWikiSections } from '../lib/wiki';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './WikiHome.css';
 
@@ -9,6 +10,8 @@ export function WikiHome() {
   const { closeDrawer } = useWikiDrawer();
   const meta = getWikiHandbookMeta(locale);
   const sections = getWikiSections(locale);
+
+  useDocumentTitle(meta.title || t.wiki.heading, t.common.name);
 
   return (
     <div className="wiki-home">

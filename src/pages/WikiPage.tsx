@@ -4,6 +4,7 @@ import { renderWikiMarkdown } from '../lib/markdown';
 import { getAdjacentWikiPages, getWikiPageBySlug } from '../lib/wiki';
 import { useMarkdownEmbeds } from '../hooks/useMarkdownEmbeds';
 import { useWikiDrawer } from '../hooks/wikiDrawerContext';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import './WikiPage.css';
 
@@ -17,6 +18,8 @@ export function WikiPage() {
   const { slug } = useParams<{ slug: string }>();
   const page = slug ? getWikiPageBySlug(slug, locale) : undefined;
   const adjacent = slug ? getAdjacentWikiPages(slug, locale) : { prev: null, next: null };
+
+  useDocumentTitle(page?.title ?? (slug ? t.wiki.notFound : t.wiki.heading), t.common.name);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const rendered = useMemo(
