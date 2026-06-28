@@ -1,0 +1,16 @@
+---
+description: Always ask before git commit or opening a pull request
+alwaysApply: true
+---
+
+# Git commit and PR operations
+
+Do **not** run `git commit`, `git push`, or `gh pr create` unless the user has explicitly asked in the current message.
+
+When code is ready:
+
+1. Summarize the changes and tell the user what would be committed.
+2. Ask whether to commit, push, and/or open a PR.
+3. Only proceed after explicit confirmation.
+
+This applies even during hotfixes or when the work seems obviously complete.
