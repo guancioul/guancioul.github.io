@@ -1,6 +1,6 @@
 ---
 title: Dopamine Detox - round 2
-image: /assets/challenges/dopamine-detox-round2.png
+image: /assets/challenges/dopamine-detox-round2.webp
 startDate: 2026-06-30
 endDate: 2026-07-06
 targetDays: 7
