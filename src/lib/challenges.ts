@@ -138,6 +138,10 @@ function buildChallenge(metaPath: string, locale: Locale): Challenge {
 
 const metaPaths = Object.keys(metaModules);
 
+export function isChallengeComplete(challenge: Challenge): boolean {
+  return challenge.targetDays !== null && challenge.entries.length >= challenge.targetDays;
+}
+
 export function getAllChallenges(locale: Locale = DEFAULT_LOCALE): Challenge[] {
   return metaPaths
     .map((path) => buildChallenge(path, locale))

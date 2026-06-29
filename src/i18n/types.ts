@@ -56,5 +56,7 @@ export interface Translations {
     noEntries: string;
     singular: string;
     entryNotFound: string;
+    inProgress: string;
+    completed: string;
   };
 }
