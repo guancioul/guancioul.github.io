@@ -15,4 +15,15 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  vite: {
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
+    optimizeDeps: {
+      exclude: ['react-icons', 'react-icons/si'],
+    },
+    ssr: {
+      noExternal: ['react-icons'],
+    },
+  },
 });

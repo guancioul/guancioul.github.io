@@ -17,23 +17,30 @@ export const socialLinks: { label: string; href: string; icon: SocialIconKey }[]
 export const introText =
   'Software Engineer with 3+ years at Trend Micro across platform, cloud security, and network security domains. Strong background in Go, Python, and cloud-native infrastructure. Active open source contributor to Strimzi and OpenTelemetry.';
 
-export interface TechGroup {
-  label: string;
-  tags: string[];
+export const credlySkillsUrl = 'https://www.credly.com/users/kuanhao-lai/skills';
+export const credlyBadgesUrl = 'https://www.credly.com/users/kuanhao-lai/badges/credly';
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  issued: string;
+  url: string;
+  image: string;
 }
 
-export const techStack: TechGroup[] = [
-  { label: 'Languages', tags: ['Go', 'Python', 'Java', 'Rust', 'TypeScript', 'Shell'] },
-  { label: 'Infrastructure', tags: ['Kubernetes', 'Helm', 'Terraform', 'Docker'] },
-  { label: 'Cloud', tags: ['AWS', 'Azure', 'GCP'] },
-  { label: 'Databases', tags: ['PostgreSQL', 'AuroraDB', 'DynamoDB', 'CosmosDB'] },
-  { label: 'CI/CD', tags: ['GitHub Actions', 'Jenkins', 'Grafana', 'Prometheus'] },
+export const certifications: Certification[] = [
+  {
+    name: 'CKAD: Certified Kubernetes Application Developer',
+    issuer: 'The Linux Foundation',
+    issued: '2026-06',
+    url: 'https://www.credly.com/badges/1d9ed657-b280-416d-ac86-2e3b901ff90c',
+    image: 'https://images.credly.com/images/cc8adc83-1dc6-4d57-8e20-22171247e052/blob',
+  },
+  {
+    name: 'CKA: Certified Kubernetes Administrator',
+    issuer: 'The Linux Foundation',
+    issued: '2026-05',
+    url: 'https://www.credly.com/badges/cce95b77-8cb7-42e9-a598-7ddbeb805e64',
+    image: 'https://images.credly.com/images/8b8ed108-e77d-4396-ac59-2504583b9d54/cka_from_cncfsite__281_29.png',
+  },
 ];
-
-export const certification = {
-  name: 'Certified Kubernetes Administrator (CKA)',
-  issuer: 'Linux Foundation / CNCF',
-  year: '2026',
-  url: 'https://www.credly.com/badges/cce95b77-8cb7-42e9-a598-7ddbeb805e64',
-  image: 'https://images.credly.com/size/340x340/images/8b8ed108-e77d-4396-ac59-2504583b9d54/cka_from_cncfsite__281_29.png',
-};
