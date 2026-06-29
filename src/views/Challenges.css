@@ -13,6 +13,19 @@
   color: var(--color-text-muted);
 }
 
+.challenges__section + .challenges__section {
+  margin-top: 48px;
+}
+
+.challenges__section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 16px;
+}
+
 .challenges__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

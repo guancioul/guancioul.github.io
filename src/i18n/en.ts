@@ -59,5 +59,7 @@ export const en = {
     noEntries: 'No entries yet.',
     singular: 'Challenge',
     entryNotFound: 'Entry not found.',
+    inProgress: 'In progress',
+    completed: 'Completed',
   },
 } satisfies Translations;

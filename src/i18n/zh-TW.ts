@@ -58,5 +58,7 @@ export const zhTW = {
     noEntries: '目前還沒有紀錄。',
     singular: '挑戰',
     entryNotFound: '找不到這篇紀錄。',
+    inProgress: '進行中',
+    completed: '已完成',
   },
 } satisfies Translations;

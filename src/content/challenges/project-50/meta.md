@@ -1,6 +1,6 @@
 ---
 title: Project 50
-image: /assets/challenges/project-50.png
+image: /assets/challenges/project-50.webp
 startDate: 2026-06-23
 endDate: 2026-08-11
 targetDays: 50
