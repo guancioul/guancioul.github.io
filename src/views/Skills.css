@@ -3,7 +3,7 @@
   border-radius: 8px;
   background: var(--color-surface);
   margin-bottom: 24px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .skill-panel__header {
@@ -30,13 +30,61 @@
   font-weight: 600;
 }
 
+.skill-panel__row--collapsible {
+  padding: 0;
+}
+
+.skill-panel__row-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.skill-panel__row-summary::-webkit-details-marker {
+  display: none;
+}
+
+.skill-panel__row-summary::after {
+  content: '';
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 2px solid var(--color-text-muted);
+  border-bottom: 2px solid var(--color-text-muted);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+.skill-panel__row--collapsible[open] .skill-panel__row-summary::after {
+  transform: rotate(-135deg);
+  margin-top: 4px;
+}
+
+.skill-panel__row-summary-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.skill-panel__tags--collapsible {
+  padding: 0 18px 16px;
+}
+
 .skill-panel__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .skill-tag {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -46,10 +94,55 @@
   border: 1px solid var(--color-border);
   color: var(--color-text);
   background: var(--color-bg);
+  text-decoration: none;
+}
+
+.skill-tag--verified {
+  padding-top: 4px;
+  padding-right: 12px;
+}
+
+a.skill-tag:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.skill-tag__credly-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  pointer-events: none;
+}
+
+.skill-tag__icon {
+  flex-shrink: 0;
 }
 
 :root[data-theme='dark'] .skill-tag__icon--invert {
   filter: invert(1);
+}
+
+.skill-panel__footnote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 12px 18px 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+.skill-panel__footnote + .skill-panel__row--link {
+  padding: 4px 18px 12px;
+}
+
+.skill-panel__footnote svg {
+  flex-shrink: 0;
+}
+
+.skill-panel__footnote-icon {
+  flex-shrink: 0;
 }
 
 .skill-panel__row--cert {
@@ -61,6 +154,16 @@
 }
 
 .skill-panel__row--cert:hover .skill-panel__cert-name {
+  text-decoration: underline;
+}
+
+.skill-panel__row--link {
+  font-size: 13px;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.skill-panel__row--link:hover {
   text-decoration: underline;
 }
 
