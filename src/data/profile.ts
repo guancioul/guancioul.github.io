@@ -1,3 +1,11 @@
+import kcnaBadge from '../assets/logos/kcna-badge.png';
+
+type LogoImport = string | { src: string };
+
+function logoUrl(logo: LogoImport): string {
+  return typeof logo === 'string' ? logo : logo.src;
+}
+
 export const githubUsername = 'guancioul';
 export const leetcodeUsername = 'guancioul';
 export const name = 'Kuan-Hao Lai';
@@ -29,6 +37,13 @@ export interface Certification {
 }
 
 export const certifications: Certification[] = [
+  {
+    name: 'KCNA: Kubernetes and Cloud Native Associate',
+    issuer: 'The Linux Foundation',
+    issued: '2026-07',
+    url: 'https://www.credly.com/badges/32234e3c-bd0e-4846-b48c-2359a49f4995',
+    image: logoUrl(kcnaBadge),
+  },
   {
     name: 'CKAD: Certified Kubernetes Application Developer',
     issuer: 'The Linux Foundation',
