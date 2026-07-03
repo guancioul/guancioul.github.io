@@ -12,16 +12,18 @@ export interface SkillGroup {
 
 export const CREDLY_VERIFIED_GROUP_LABEL = 'Credly Verified Skills';
 
-/** Credly skills wallet (18 items) — names and slugs from credly.com/users/kuanhao-lai/skills */
+/** Credly skills wallet (20 items) — names and slugs from credly.com/users/kuanhao-lai/skills */
 const CREDLY_WALLET_SKILLS: Record<string, string> = {
   'Application Programming Interface (API)': 'application-programming-interface-api',
   'Business Service Management': 'business-service-management',
   'Cloud Applications': 'cloud-applications',
   'Cloud Computing': 'cloud-computing',
+  'Cluster Development': 'cluster-development',
   'Configuration Management': 'configuration-management',
   'Container Shipping': 'container-shipping',
   Docker: 'docker',
   'Event Logging': 'event-logging',
+  Git: 'git',
   Helm: 'helm',
   Java: 'java',
   Kubernetes: 'kubernetes',
@@ -58,9 +60,11 @@ export const skillGroups: SkillGroup[] = [
       'Business Service Management',
       'Cloud Applications',
       'Cloud Computing',
+      'Cluster Development',
       'Configuration Management',
       'Container Shipping',
       'Event Logging',
+      'Git',
       'Scheduling',
       'Security Policies',
       'Site Reliability Engineering',
