@@ -1,10 +1,5 @@
 import kcnaBadge from '../assets/logos/kcna-badge.png';
-
-type LogoImport = string | { src: string };
-
-function logoUrl(logo: LogoImport): string {
-  return typeof logo === 'string' ? logo : logo.src;
-}
+import { logoUrl } from '../lib/logoUrl';
 
 export const githubUsername = 'guancioul';
 export const leetcodeUsername = 'guancioul';

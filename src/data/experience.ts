@@ -1,12 +1,7 @@
 import cncfLogo from '../assets/logos/cncf.png';
 import trendMicroLogo from '../assets/logos/trend-micro.png';
 import cacLogo from '../assets/logos/cac.png';
-
-type LogoImport = string | { src: string };
-
-function logoUrl(logo: LogoImport): string {
-  return typeof logo === 'string' ? logo : logo.src;
-}
+import { logoUrl } from '../lib/logoUrl';
 
 export interface ExperienceTeam {
   name: string;
