@@ -9,7 +9,7 @@ const CREDLY_C_PATH =
 export function CredlyBadge({ inline = false }: { inline?: boolean }) {
   return (
     <svg
-      className={inline ? 'skill-panel__footnote-icon' : 'skill-tag__credly-badge'}
+      className={inline ? 'panel__footnote-icon' : 'skill-tag__credly-badge'}
       width="12"
       height="12"
       viewBox="0 0 20 20"

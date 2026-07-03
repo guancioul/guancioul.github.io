@@ -3,7 +3,7 @@ import { githubUsername } from '../data/profile';
 import { GithubContributions } from '../components/GithubContributions';
 import { SectionHeading } from '../components/SectionHeading';
 import { useLocalizedPath } from '../hooks/useLocalizedPath';
-import './Skills.css';
+import '../components/Panel.css';
 import './OpenSource.css';
 
 export function OpenSource() {
@@ -22,9 +22,9 @@ export function OpenSource() {
         </a>
         <GithubContributions username={githubUsername} />
 
-        <div className="skill-panel open-source__cncf-panel">
-          <div className="skill-panel__header">CNCF Stats</div>
-          <div className="skill-panel__row open-source__cncf-row">
+        <div className="panel open-source__cncf-panel">
+          <div className="panel__header">CNCF Stats</div>
+          <div className="panel__row open-source__cncf-row">
             <DevStat username={githubUsername} />
           </div>
         </div>
