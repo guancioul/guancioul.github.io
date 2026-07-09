@@ -2,9 +2,9 @@
 title: Project 50
 image: /assets/challenges/project-50.webp
 startDate: 2026-06-23
-endDate: 2026-08-11
-targetDays: 50
+endDate: 2026-07-06
+targetDays: 14
 tags: Discipline, Fitness, Mindset
-summary: 50 days following 7 daily rules — wake before 8AM, exercise, reading, finish to-do list, clean eating, night routine, and journaling.
+summary: 14 days following 7 daily rules — wake before 8AM, exercise, reading, finish to-do list, clean eating, night routine, and journaling.
 rule: No single habit can be missed two days in a row.
 ---
