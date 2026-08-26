@@ -18,6 +18,7 @@ export interface Challenge {
   tags: string[];
   summary: string;
   rule: string;
+  hidden: boolean;
   entries: ChallengeEntry[];
 }
 
@@ -132,6 +133,7 @@ function buildChallenge(metaPath: string, locale: Locale): Challenge {
     tags: tags ? tags.split(',').map((tag) => tag.trim()).filter(Boolean) : [],
     summary: translation?.data.summary ?? data.summary ?? '',
     rule: translation?.data.rule ?? data.rule ?? '',
+    hidden: data.hidden === 'true',
     entries,
   };
 }
@@ -145,10 +147,13 @@ export function isChallengeComplete(challenge: Challenge): boolean {
 export function getAllChallenges(locale: Locale = DEFAULT_LOCALE): Challenge[] {
   return metaPaths
     .map((path) => buildChallenge(path, locale))
+    .filter((challenge) => !challenge.hidden)
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
 }
 
 export function getChallengeBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Challenge | undefined {
   const metaPath = metaPaths.find((path) => slugFromMetaPath(path) === slug);
-  return metaPath ? buildChallenge(metaPath, locale) : undefined;
+  if (!metaPath) return undefined;
+  const challenge = buildChallenge(metaPath, locale);
+  return challenge.hidden ? undefined : challenge;
 }
