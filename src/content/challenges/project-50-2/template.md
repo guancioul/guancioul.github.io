@@ -9,5 +9,6 @@ title: Day N
 - [ ] Read 10 pages
 - [ ] Finished today's to-do list
 - [ ] Stuck to the diet plan (no alcohol, junk food, or sugary drinks)
-- [ ] Night routine starts at 11 PM
+- [ ] Night routine starts at 11 PM — prep tomorrow's stuff, write tomorrow's to-do list, shower + skincare
+- [ ] No digital entertainment
 - [ ] Logged today's progress in the journal
